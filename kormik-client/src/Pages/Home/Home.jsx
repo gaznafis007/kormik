@@ -2,23 +2,26 @@ import { Link } from "react-router-dom";
 import useAxios from "../../hooks/useAxios/useAxios";
 import { GifIcon } from "@heroicons/react/24/solid";
 import { BellAlertIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthProvider";
 
 const Home = () => {
   const [contents, setContents] = useState([]);
   const axiosSecure = useAxios();
+  const { myInitials } = useContext(AuthContext);
+  
   const handleToast = () => {
     console.log("test");
     toast.success(`Congrats react-hot-toast implemented`);
   };
-  const handleALert = () =>{
+  const handleALert = () => {
     Swal.fire({
-        title: 'Congrats, Sweet alert implemented',
-        icon: 'success'
-    })
-  }
+      title: "Congrats, Sweet alert implemented",
+      icon: "success",
+    });
+  };
   useEffect(() => {
     axiosSecure.get("/test").then((res) => setContents(res.data));
   }, []);
@@ -56,8 +59,13 @@ const Home = () => {
           onClick={handleALert}
           className="flex flex-row items-center gap-2 bg-orange-600 p-4 text-white rounded-md mx-auto"
         >
-          <span>Click me for alert</span> <BellAlertIcon className="size-5"></BellAlertIcon>
+          <span>Click me for alert</span>{" "}
+          <BellAlertIcon className="size-5"></BellAlertIcon>
         </button>
+      </div>
+      <div className="my-6 w-1/5 mx-auto p-4 bg-slate-300">
+        <h2 className="text-2xl font-bold text-center text-violet-400">Name: {myInitials?.name}</h2>
+        <p className="text-blue-600">email: {myInitials?.email}</p>
       </div>
     </section>
   );
