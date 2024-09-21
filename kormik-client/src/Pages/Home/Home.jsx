@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
-import useAxios from "../../hooks/useAxios/useAxios";
 import { GifIcon } from "@heroicons/react/24/solid";
 import { BellAlertIcon } from "@heroicons/react/24/solid";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthProvider";
@@ -11,6 +10,7 @@ import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
 const Home = () => {
 //   const [contents, setContents] = useState([]);
 //   const axiosSecure = useAxios();
+// test-purpose
   const { myInitials } = useContext(AuthContext);
   const [contents] = useAxiosForData("/test")
   
