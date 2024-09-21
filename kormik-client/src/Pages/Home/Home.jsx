@@ -6,11 +6,13 @@ import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthProvider";
+import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
 
 const Home = () => {
-  const [contents, setContents] = useState([]);
-  const axiosSecure = useAxios();
+//   const [contents, setContents] = useState([]);
+//   const axiosSecure = useAxios();
   const { myInitials } = useContext(AuthContext);
+  const [contents] = useAxiosForData("/test")
   
   const handleToast = () => {
     console.log("test");
@@ -22,9 +24,9 @@ const Home = () => {
       icon: "success",
     });
   };
-  useEffect(() => {
-    axiosSecure.get("/test").then((res) => setContents(res.data));
-  }, []);
+//   useEffect(() => {
+//     axiosSecure.get("/test").then((res) => setContents(res.data));
+//   }, []);
   return (
     <section>
       <h2 className="text-center text-6xl text-blue-500">
