@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../context/AuthProvider";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
+import Button from "../../Shared/Button/Button";
 
 const Home = () => {
 //   const [contents, setContents] = useState([]);
@@ -24,6 +25,12 @@ const Home = () => {
       icon: "success",
     });
   };
+  const handleWithParams = id =>{
+    Swal.fire({
+      title: id,
+      icon: "info"
+    })
+  }
 //   useEffect(() => {
 //     axiosSecure.get("/test").then((res) => setContents(res.data));
 //   }, []);
@@ -57,13 +64,15 @@ const Home = () => {
         >
           <span>Click me for toast</span> <GifIcon className="size-5"></GifIcon>
         </button>
-        <button
-          onClick={handleALert}
-          className="flex flex-row items-center gap-2 bg-orange-600 p-4 text-white rounded-md mx-auto"
+        <Button
+          // onClick={handleALert}
+          // className="flex flex-row items-center gap-2 bg-orange-600 p-4 text-white rounded-md mx-auto"
+          handler={handleALert}
         >
           <span>Click me for alert</span>{" "}
           <BellAlertIcon className="size-5"></BellAlertIcon>
-        </button>
+        </Button>
+        <Button handler={handleWithParams} params={"Hore na diya"}>Pass with params</Button>
       </div>
       <div className="my-6 w-1/5 mx-auto p-4 bg-slate-300">
         <h2 className="text-2xl font-bold text-center text-violet-400">Name: {myInitials?.name}</h2>

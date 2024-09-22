@@ -5,11 +5,11 @@ import Navbar from "../../Shared/Navbar/Navbar";
 
 const Main = () => {
     return (
-        <>
+        <section className="bg-slate-700">
                 <Navbar/>
                 <Outlet/>
                 <Footer/>
-        </>
+        </section>
     );
 };
 
