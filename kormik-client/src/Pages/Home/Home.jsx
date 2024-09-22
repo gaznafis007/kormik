@@ -4,17 +4,20 @@ import { BellAlertIcon } from "@heroicons/react/24/solid";
 import { useContext } from "react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import Lottie from "lottie-react";
+import freelanceOne from "../../assets/freelance-lottie-1.json";
+import freelanceTwo from "../../assets/freelance-lottie-2.json";
 import { AuthContext } from "../../context/AuthProvider";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
 import Button from "../../Shared/Button/Button";
 
 const Home = () => {
-//   const [contents, setContents] = useState([]);
-//   const axiosSecure = useAxios();
-// test-purpose
+  //   const [contents, setContents] = useState([]);
+  //   const axiosSecure = useAxios();
+  // test-purpose
   const { myInitials } = useContext(AuthContext);
-  const [contents] = useAxiosForData("/test")
-  
+  const [contents] = useAxiosForData("/test");
+
   const handleToast = () => {
     console.log("test");
     toast.success(`Congrats react-hot-toast implemented`);
@@ -25,15 +28,15 @@ const Home = () => {
       icon: "success",
     });
   };
-  const handleWithParams = id =>{
+  const handleWithParams = (id) => {
     Swal.fire({
       title: id,
-      icon: "info"
-    })
-  }
-//   useEffect(() => {
-//     axiosSecure.get("/test").then((res) => setContents(res.data));
-//   }, []);
+      icon: "info",
+    });
+  };
+  //   useEffect(() => {
+  //     axiosSecure.get("/test").then((res) => setContents(res.data));
+  //   }, []);
   return (
     <section>
       <h2 className="text-center text-6xl text-blue-500">
@@ -72,11 +75,19 @@ const Home = () => {
           <span>Click me for alert</span>{" "}
           <BellAlertIcon className="size-5"></BellAlertIcon>
         </Button>
-        <Button handler={handleWithParams} params={"Hore na diya"}>Pass with params</Button>
+        <Button handler={handleWithParams} params={"Hore na diya"}>
+          Pass with params
+        </Button>
       </div>
       <div className="my-6 w-1/5 mx-auto p-4 bg-slate-300">
-        <h2 className="text-2xl font-bold text-center text-violet-400">Name: {myInitials?.name}</h2>
+        <h2 className="text-2xl font-bold text-center text-violet-400">
+          Name: {myInitials?.name}
+        </h2>
         <p className="text-blue-600">email: {myInitials?.email}</p>
+      </div>
+      <div className="w-1/3">
+        <Lottie animationData={freelanceOne}></Lottie>
+        <Lottie animationData={freelanceTwo}></Lottie>
       </div>
     </section>
   );
