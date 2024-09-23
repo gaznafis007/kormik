@@ -36,7 +36,7 @@ const Signin = () => {
             className="w-full p-2 border rounded-md border-rose-500"
           />
         </div>
-        <Link></Link>
+        <Link to="/register" className="capitalize text-rose-500 my-2 hover:underline hover:underline-offset-1">new to kormik? register here</Link>
         <input
           type="submit"
           value="Log in"

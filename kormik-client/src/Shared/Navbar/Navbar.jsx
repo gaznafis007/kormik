@@ -19,8 +19,8 @@ const Navbar = () => {
     return (
         <nav className="md:mx-4 p-4 flex flex-row items-center justify-between text-lg">
             <h2 className="text-6xl text-white font-semibold font-sans">Kormik</h2>
-            <ul className="sm:hidden lg:flex md:flex-row gap-7 text-rose-600 font-sans font-thin">{navItems}</ul>
-            <ul className="lg:hidden z-10 overflow-auto">
+            <ul className="hidden md:flex md:flex-row gap-7 text-rose-600 font-sans font-thin">{navItems}</ul>
+            <ul className="md:hidden z-10 overflow-auto">
                 <li>
                         <Button handler={handleIsVisible}>
                             {
