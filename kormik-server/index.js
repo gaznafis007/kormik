@@ -42,8 +42,10 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // MongoDB collections
     const categoriesCollection = client.db('kormikDB').collection('categories');
+
+    // api-s
     app.get("/categories", async(req,res) =>{
         const query = {}
         const options = {
