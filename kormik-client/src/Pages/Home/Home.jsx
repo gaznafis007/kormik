@@ -5,6 +5,8 @@ import { useContext } from "react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import Lottie from "lottie-react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import freelanceOne from "../../assets/freelance-lottie-1.json";
 import freelanceTwo from "../../assets/freelance-lottie-2.json";
 import { AuthContext } from "../../context/AuthProvider";
@@ -85,9 +87,26 @@ const Home = () => {
         </h2>
         <p className="text-blue-600">email: {myInitials?.email}</p>
       </div>
-      <div className="w-1/3">
-        <Lottie animationData={freelanceOne}></Lottie>
-        <Lottie animationData={freelanceTwo}></Lottie>
+      <div className="w-1/3 mx-auto">
+        <Swiper
+          centeredSlides={true}
+          autoplay={{
+            delay: 1500,
+            disableOnInteraction: false,
+          }}
+          pagination={{
+            clickable: true,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination, Navigation]}
+        >
+            <SwiperSlide>
+              <Lottie animationData={freelanceOne}></Lottie>
+            </SwiperSlide>
+            <SwiperSlide>
+              <Lottie animationData={freelanceTwo}></Lottie>
+            </SwiperSlide>
+        </Swiper>
       </div>
     </section>
   );
