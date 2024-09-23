@@ -3,6 +3,7 @@ const cors = require('cors');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const port = process.env.PORT || 5000;
 const app = express();
+const data  = require('./data/categories.json')
 
 // middleware
 app.use(cors({
@@ -13,36 +14,14 @@ app.use(express.json());
 
 require('dotenv').config();
 
-// test data
-const data = [
-    {
-        content: 'data1'
-    },
-    {
-        content: 'data2'
-    },
-    {
-        content: 'data3'
-    },
-    {
-        content: 'data4'
-    },
-    {
-        content: 'data5'
-    },
-    {
-        content: 'data6'
-    },
-]
+
 
 app.get("/", (req,res) =>{
     res.send('Kormik server is initiated')
 })
 
 // test-api-for-axios
-app.get("/test", (req,res) =>{
-    res.send(data)
-})
+
 
 
 
@@ -63,10 +42,19 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    const categoriesCollection = client.db('kormikDB').collection('categories');
+    app.get("/categories", async(req,res) =>{
+        const query = {}
+        const options = {
+            projection: {category: 1}
+        }
+        const result = await categoriesCollection.find(query, options).toArray()
+        res.send(result)
+    })
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
