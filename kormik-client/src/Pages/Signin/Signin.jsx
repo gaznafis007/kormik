@@ -1,7 +1,12 @@
+import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth/useAuth";
 import Heading from "../../Shared/Heading/Heading";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Signin = () => {
+  const navigate = useNavigate();
+  const {logIn} = useAuth()
   const handleSignIn = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -11,7 +16,18 @@ const Signin = () => {
       email,
       password,
     };
-    console.log(user);
+    logIn(user.email, user.password)
+    .then(res=>{
+      console.log(res.user)
+      Swal.fire({
+        title: `Welcome Back! ${res.user.displayName}`,
+        icon: 'success'
+      })
+    })
+    .catch(err =>{
+      const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]
+      toast.error(errorMessage)
+    })
   };
   return (
     <section>

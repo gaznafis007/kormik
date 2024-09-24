@@ -103,9 +103,8 @@ const Signup = () => {
       storeUser(freelancer)
     })
     .catch(err=>{
-      const errorMessage = err.message.slice(' ')
-      console.log(errorMessage)
-      toast.error(err.message)
+      const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]
+      toast.error(errorMessage)
     })
   };
   return (
