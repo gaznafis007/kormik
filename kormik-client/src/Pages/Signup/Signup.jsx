@@ -1,12 +1,16 @@
 import { useState } from "react";
+import {useNavigate} from 'react-router-dom'
 import Heading from "../../Shared/Heading/Heading";
 import InputField from "../../Shared/InputField/InputField";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
+import useAuth from "../../hooks/useAuth/useAuth"
+import Swal from 'sweetalert2'
 
 const Signup = () => {
   const [role, setRole] = useState("");
   const [categories] = useAxiosForData("/categories");
-  // console.log(categories);
+  const {register, getProfile} = useAuth()
+  const navigate = useNavigate()
   const handleRole = (event) => {
     event.preventDefault();
     console.log(event.target.value);
@@ -34,7 +38,20 @@ const Signup = () => {
       paymentMethod: form.paymentMethod.value,
       userProfileImage: formData,
     };
-
+    register(employer.email, employer.password)
+    .then(res=>{
+      const user = res.user
+      console.log(user)
+      Swal.fire({
+        title: "Congrats you ar registered as a client",
+        icon: 'success'
+      })
+      getProfile(employer.name)
+      navigate('/')
+    })
+    .catch(err=>{
+      console.log(err.message)
+    })
     console.log(employer);
   };
   const handleFreelancerRegister = (event) => {
@@ -42,7 +59,7 @@ const Signup = () => {
     const form = event.target;
     const formData = new FormData();
     formData.append("profileImage", form.profileImage.files[0]);
-    const user = {
+    const freelancer = {
       name: form.name.value,
       email: form.email.value,
       password: form.password.value,
@@ -58,7 +75,20 @@ const Signup = () => {
       availability: form.availability.value,
       userProfileImage: formData,
     };
-    console.log("freelancer", user);
+    console.log("freelancer", freelancer);
+    register(freelancer?.email, freelancer?.password)
+    .then(res=>{
+      const user = res.user;
+      console.log(user)
+      getProfile(freelancer?.name)
+      Swal.fire({
+        title: `Congrats! ${freelancer.name} you are registered as a freelancer`,
+        icon: 'success'
+      })
+    })
+    .catch(err=>{
+      console.log(err.message)
+    })
   };
   return (
     <section>
