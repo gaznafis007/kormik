@@ -36,7 +36,7 @@ const Navbar = () => {
       </li>
       <li>
         <Link
-          to="/"
+          to="/postJob"
           className="hover:pb-2 px-2 hover:border-b-2 hover:border-rose-600"
         >
           Find Talents

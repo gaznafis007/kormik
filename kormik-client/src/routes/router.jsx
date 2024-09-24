@@ -3,6 +3,7 @@ import Main from "../layout/Main/Main"
 import Home from "../Pages/Home/Home"
 import Signup from "../Pages/Signup/Signup"
 import Signin from "../Pages/Signin/Signin"
+import PostJob from "../Pages/PostJob/PostJob"
 
 
 
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
             {
                 path:"/signin",
                 element:<Signin/>
+            },
+            {
+                path:"/postJob",
+                element: <PostJob/>
             }
         ]
     }
