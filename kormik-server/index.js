@@ -44,6 +44,7 @@ async function run() {
     await client.db("admin").command({ ping: 1 });
     // MongoDB collections
     const categoriesCollection = client.db('kormikDB').collection('categories');
+    const userCollection = client.db('kormikDB').collection('users');
 
     // api-s
     app.get("/categories", async(req,res) =>{
@@ -53,6 +54,16 @@ async function run() {
         }
         const result = await categoriesCollection.find(query, options).toArray()
         res.send(result)
+    })
+    app.post("/users", async(req,res) =>{
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    })
+    app.get("/users", async(req,res) =>{
+      let query = {};
+      const result = await userCollection.find(query).toArray();
+      res.send(result)
     })
   } finally {
     // Ensures that the client will close when you finish/error
