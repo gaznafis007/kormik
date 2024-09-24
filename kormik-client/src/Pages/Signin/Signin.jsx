@@ -1,11 +1,13 @@
 import Swal from "sweetalert2";
 import useAuth from "../../hooks/useAuth/useAuth";
 import Heading from "../../Shared/Heading/Heading";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const Signin = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
   const {logIn} = useAuth()
   const handleSignIn = (event) => {
     event.preventDefault();
@@ -23,6 +25,7 @@ const Signin = () => {
         title: `Welcome Back! ${res.user.displayName}`,
         icon: 'success'
       })
+      navigate(from, {replace:true})
     })
     .catch(err =>{
       const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]

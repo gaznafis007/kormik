@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom'
+import {useLocation, useNavigate} from 'react-router-dom'
 import Heading from "../../Shared/Heading/Heading";
 import InputField from "../../Shared/InputField/InputField";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
@@ -12,8 +12,10 @@ const Signup = () => {
   const [role, setRole] = useState("");
   const [categories] = useAxiosForData("/categories");
   const {register, getProfile} = useAuth()
-  const axiosSecure = useAxios()
-  const navigate = useNavigate()
+  const axiosSecure = useAxios();
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
   const handleRole = (event) => {
     event.preventDefault();
     console.log(event.target.value);
@@ -29,7 +31,7 @@ const Signup = () => {
             title: `Congrats you ar registered as a ${user?.role}`,
             icon: 'success'
           })
-          navigate('/')
+          navigate(from, {replace:true})
         }
       })
     }catch{
