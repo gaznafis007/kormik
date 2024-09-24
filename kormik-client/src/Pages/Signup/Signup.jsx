@@ -5,17 +5,39 @@ import InputField from "../../Shared/InputField/InputField";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
 import useAuth from "../../hooks/useAuth/useAuth"
 import Swal from 'sweetalert2'
+import useAxios from "../../hooks/useAxios/useAxios";
+import toast from "react-hot-toast"
 
 const Signup = () => {
   const [role, setRole] = useState("");
   const [categories] = useAxiosForData("/categories");
   const {register, getProfile} = useAuth()
+  const axiosSecure = useAxios()
   const navigate = useNavigate()
   const handleRole = (event) => {
     event.preventDefault();
     console.log(event.target.value);
     setRole(event.target.value);
   };
+  const storeUser = (user) =>{
+    try{
+      axiosSecure.post("/users", user)
+      .then(res=>{
+        console.log(res.data)
+        if(res.data.acknowledged){
+          Swal.fire({
+            title: `Congrats you ar registered as a ${user?.role}`,
+            icon: 'success'
+          })
+          navigate('/')
+        }
+      })
+    }catch{
+      (err)=>{
+        toast.error(err.message)
+      }
+    }
+  }
   const handleEmployerRegister = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -42,15 +64,12 @@ const Signup = () => {
     .then(res=>{
       const user = res.user
       console.log(user)
-      Swal.fire({
-        title: "Congrats you ar registered as a client",
-        icon: 'success'
-      })
       getProfile(employer.name)
-      navigate('/')
+      storeUser(employer)
     })
     .catch(err=>{
-      console.log(err.message)
+      const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]
+      toast.error(errorMessage)
     })
     console.log(employer);
   };
@@ -81,13 +100,12 @@ const Signup = () => {
       const user = res.user;
       console.log(user)
       getProfile(freelancer?.name)
-      Swal.fire({
-        title: `Congrats! ${freelancer.name} you are registered as a freelancer`,
-        icon: 'success'
-      })
+      storeUser(freelancer)
     })
     .catch(err=>{
-      console.log(err.message)
+      const errorMessage = err.message.slice(' ')
+      console.log(errorMessage)
+      toast.error(err.message)
     })
   };
   return (
