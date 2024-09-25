@@ -45,8 +45,11 @@ async function run() {
     // MongoDB collections
     const categoriesCollection = client.db('kormikDB').collection('categories');
     const userCollection = client.db('kormikDB').collection('users');
+    const jobCollection = client.db('kormikDB').collection('jobs')
 
     // api-s
+
+    // category api
     app.get("/categories", async(req,res) =>{
         const query = {}
         const options = {
@@ -57,7 +60,8 @@ async function run() {
     })
     app.get("/subCategories/:subCategories", async(req,res) =>{
       const category = req.params.subCategories
-      console.log(category)
+      // test purpose
+      // console.log(category)
       let query = { category : category};
       const options = {
         projection: { subCategories: 1}
@@ -66,6 +70,8 @@ async function run() {
       res.send(result)
 
     })
+
+    // user api
     app.post("/users", async(req,res) =>{
       const user = req.body;
       const result = await userCollection.insertOne(user);
@@ -74,6 +80,13 @@ async function run() {
     app.get("/users", async(req,res) =>{
       let query = {};
       const result = await userCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    // job api
+    app.post("/job", async(req,res) =>{
+      const job = req.body;
+      const result = await jobCollection.insertOne(job);
       res.send(result)
     })
   } finally {

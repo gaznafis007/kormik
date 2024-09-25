@@ -5,11 +5,14 @@ import InputField from "../../Shared/InputField/InputField";
 import TextArea from "../../Shared/TextArea/TextArea";
 import useAxios from "../../hooks/useAxios/useAxios";
 import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
+import useAuth from "../../hooks/useAuth/useAuth";
+import Swal from "sweetalert2";
 
 const PostJob = () => {
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
   const axiosSecure = useAxios();
+  const {user} = useAuth()
   const handleSubCategories = (event) => {
     event.preventDefault();
     const category = event.target.value;
@@ -24,19 +27,31 @@ const PostJob = () => {
     const form = event.target;
     const formData = new FormData();
     formData.append('attachment', form.attachment.files[0])
+    const postDate = new Date()
     const job = {
         title: form.title.value,
+        jobPoster: user?.displayName,
+        jobPosterMail: user?.email,
         jobDescription: form.jobDescription.value,
         projectRate: form.projectRate.value,
         keyword: form.keyword.value.split('; '),
         skill: form.skill.value.split('; '),
+        postDate,
         category: form.category.value,
         subCategory: form.subCategory.value,
         deadline: form.deadline.value,
         jobType: form.jobType.value,
         attachment: form.attachment.value
     }
-    console.log(job)
+    axiosSecure.post("/job", job)
+    .then(res =>{
+        if(res.data.acknowledged){
+            Swal.fire({
+                title: `Congrats, your job / project for ${form.title.value} is posted`,
+                icon: "success"
+            })
+        }
+    })
   }
   return (
     <section>

@@ -7,6 +7,7 @@ import useAuth from "../../hooks/useAuth/useAuth"
 import Swal from 'sweetalert2'
 import useAxios from "../../hooks/useAxios/useAxios";
 import toast from "react-hot-toast"
+import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
 
 const Signup = () => {
   const [role, setRole] = useState("");
@@ -328,11 +329,7 @@ const Signup = () => {
           </>
         )}
         {role && (
-          <input
-            type="submit"
-            value="Register"
-            className="my-2 bg-rose-500 p-3 block w-full text-white font-sans font-semibold rounded-md mx-auto hover:bg-rose-600"
-          />
+          <InputSubmitForForm type={"submit"} value={"Register"}></InputSubmitForForm>
         )}
       </form>
     </section>
