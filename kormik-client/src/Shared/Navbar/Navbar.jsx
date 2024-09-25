@@ -69,9 +69,11 @@ const Navbar = () => {
   return (
     <nav className="md:mx-4 p-4 flex flex-row items-center justify-between text-lg">
       <h2 className="text-6xl text-white font-semibold font-sans">Kormik</h2>
-      <ul className="hidden md:flex md:flex-row gap-7 text-rose-600 font-sans font-thin">
+      {/* for medium to large device nav */}
+      <ul className="hidden md:flex md:flex-row gap-7 text-rose-600 items-center font-sans font-thin">
         {navItems}
       </ul>
+      {/* for small device's hamburger navigation menu */}
       <ul className="md:hidden z-10 overflow-auto">
         <li>
           <Button handler={handleIsVisible}>
@@ -82,7 +84,7 @@ const Navbar = () => {
             )}
           </Button>
           {isVisible && (
-            <ul className="flex flex-col gap-7 text-rose-600 font-sans font-thin">
+            <ul className="flex flex-col gap-7 justify-center text-rose-600 font-sans font-thin">
               {navItems}
             </ul>
           )}

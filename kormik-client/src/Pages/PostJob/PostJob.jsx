@@ -4,7 +4,7 @@ import Heading from "../../Shared/Heading/Heading";
 const PostJob = () => {
     return (
         <section>
-            <Heading>job post coming very soon...</Heading>
+            <Heading>Solve your next project from here</Heading>
         </section>
     );
 };
