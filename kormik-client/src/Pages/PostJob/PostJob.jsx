@@ -7,18 +7,16 @@ import useAxios from "../../hooks/useAxios/useAxios";
 
 const PostJob = () => {
   const [categories] = useAxiosForData("/categories");
-  const [subCategories, setSubCategories] = useState("")
-  const axiosSecure = useAxios()
-  const handleSubCategories = event =>{
-    event.preventDefault()
-    const category = event.target.value
-    console.log(category)
-    axiosSecure.get(`/subCategories/${category}`)
-    .then(res =>{
-        setSubCategories(res.data)
-    })
-}
-console.log(subCategories)
+  const [subCategories, setSubCategories] = useState("");
+  const axiosSecure = useAxios();
+  const handleSubCategories = (event) => {
+    event.preventDefault();
+    const category = event.target.value;
+    console.log(category);
+    axiosSecure.get(`/subCategories/${category}`).then((res) => {
+      setSubCategories(res.data);
+    });
+  };
   return (
     <section>
       <Heading>Solve your next project from here</Heading>
@@ -49,7 +47,7 @@ console.log(subCategories)
             name={"keyword"}
             placeholder={"user ; after one keyword"}
           ></TextArea>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col my-2 gap-4">
             <label className="capitalize text-rose-500">
               Choose project category
             </label>
@@ -59,11 +57,32 @@ console.log(subCategories)
               onChange={handleSubCategories}
             >
               <option selected>Chose your project category</option>
-              {
-                categories.map(category => <option key={category._id} className="capitalize">{category.category}</option>)
-              }
+              {categories.map((category) => (
+                <option key={category._id} value={category.category} className="capitalize">
+                  {category.category}
+                </option>
+              ))}
             </select>
           </div>
+          {subCategories && (
+            <div className="flex flex-col my-2 gap-4">
+              <label className="capitalize text-rose-500">
+                Sub category
+              </label>
+              <select
+                name="companySize"
+                className="w-full p-2 rounded-md border border-rose-500"
+                onChange={handleSubCategories}
+              >
+                <option selected>Chose your project sub-category</option>
+                {subCategories.subCategories.map((subCategory, idx) => (
+                  <option key={idx} className="capitalize" value={subCategory}>
+                    {subCategory}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </form>
       </div>
     </section>

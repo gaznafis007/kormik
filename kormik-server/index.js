@@ -62,7 +62,7 @@ async function run() {
       const options = {
         projection: { subCategories: 1}
       }
-      const result = await categoriesCollection.find(query, options).toArray();
+      const result = await categoriesCollection.findOne(query, options);
       res.send(result)
 
     })
