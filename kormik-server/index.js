@@ -55,6 +55,17 @@ async function run() {
         const result = await categoriesCollection.find(query, options).toArray()
         res.send(result)
     })
+    app.get("/subCategories/:subCategories", async(req,res) =>{
+      const category = req.params.subCategories
+      console.log(category)
+      let query = { category : category};
+      const options = {
+        projection: { subCategories: 1}
+      }
+      const result = await categoriesCollection.find(query, options).toArray();
+      res.send(result)
+
+    })
     app.post("/users", async(req,res) =>{
       const user = req.body;
       const result = await userCollection.insertOne(user);
