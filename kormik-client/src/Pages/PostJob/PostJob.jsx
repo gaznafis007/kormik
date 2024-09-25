@@ -53,6 +53,14 @@ const PostJob = () => {
         }
     })
   }
+  
+  if(user?.role === "freelancer"){
+    return (
+        <>
+        <Heading>this is to hire people for your project  not to find job / project</Heading>
+    </>
+    )
+  }
   return (
     <section>
       <Heading>Solve your next project from here</Heading>

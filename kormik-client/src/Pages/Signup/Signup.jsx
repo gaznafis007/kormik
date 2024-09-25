@@ -32,7 +32,7 @@ const Signup = () => {
             title: `Congrats you ar registered as a ${user?.role}`,
             icon: 'success'
           })
-          navigate(from, {replace:true})
+          navigate(from)
         }
       })
     }catch{

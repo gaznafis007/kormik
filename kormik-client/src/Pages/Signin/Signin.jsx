@@ -25,7 +25,7 @@ const Signin = () => {
         title: `Welcome Back! ${res.user.displayName}`,
         icon: 'success'
       })
-      navigate(from, {replace:true})
+      navigate(from)
     })
     .catch(err =>{
       const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]

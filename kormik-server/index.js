@@ -77,12 +77,21 @@ async function run() {
       const result = await userCollection.insertOne(user);
       res.send(result);
     })
+    // app.get("/users", async(req,res) =>{
+    //   let query = {};
+    //   const result = await userCollection.find(query).toArray();
+    //   res.send(result)
+    // })
     app.get("/users", async(req,res) =>{
       let query = {};
-      const result = await userCollection.find(query).toArray();
+      if(req.query.email){
+        query = {email: req.query.email}
+      };
+      const result = await userCollection.findOne(query);
+      console.log(req.query.email)
+      console.log(result)
       res.send(result)
     })
-
     // job api
     app.post("/job", async(req,res) =>{
       const job = req.body;

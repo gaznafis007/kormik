@@ -1,13 +1,15 @@
 import { createContext, useEffect, useState } from 'react';
 import {createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile} from 'firebase/auth'
 import { app } from '../Firebase/firebase.config';
+import useAxios from '../hooks/useAxios/useAxios';
 
 export const AuthContext = createContext()
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState()
-    const [loading, setLoading] = useState(true)
 
+    const [loading, setLoading] = useState(true)
+    const axiosSecure = useAxios()
     const auth = getAuth(app)
 
     const register = (email, password) =>{
@@ -26,7 +28,17 @@ const AuthProvider = ({children}) => {
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
             setUser(currentUser);
-            setLoading(false)
+            setLoading(false);
+            if(currentUser?.uid){
+                axiosSecure.get(`/users?email=${currentUser.email}`)
+            .then(res=>{
+                currentUser.role = res?.data?.role
+                setUser(currentUser);
+                setLoading(false)
+                console.log(res.data)
+                console.log(currentUser)
+            })
+            }
         })
         return () =>{
             unsubscribe()
@@ -44,8 +56,7 @@ const AuthProvider = ({children}) => {
         register,
         logIn,
         getProfile,
-        logOut
-
+        logOut, 
     }
     
     

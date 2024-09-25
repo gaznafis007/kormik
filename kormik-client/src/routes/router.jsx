@@ -4,6 +4,7 @@ import Home from "../Pages/Home/Home"
 import Signup from "../Pages/Signup/Signup"
 import Signin from "../Pages/Signin/Signin"
 import PostJob from "../Pages/PostJob/PostJob"
+import PrivateRouter from "../Pages/Private/PrivateRouter"
 
 
 
@@ -26,7 +27,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:"/postJob",
-                element: <PostJob/>
+                element: <PrivateRouter><PostJob/></PrivateRouter>
             }
         ]
     }
