@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
 import Heading from "../../Shared/Heading/Heading";
 import InputField from "../../Shared/InputField/InputField";
 import TextArea from "../../Shared/TextArea/TextArea";
 import useAxios from "../../hooks/useAxios/useAxios";
+import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
 
 const PostJob = () => {
   const [categories] = useAxiosForData("/categories");
@@ -12,11 +13,31 @@ const PostJob = () => {
   const handleSubCategories = (event) => {
     event.preventDefault();
     const category = event.target.value;
-    console.log(category);
+    // for test purpose
+    // console.log(category);
     axiosSecure.get(`/subCategories/${category}`).then((res) => {
       setSubCategories(res.data);
     });
   };
+  const handlePostJob = event =>{
+    event.preventDefault()
+    const form = event.target;
+    const formData = new FormData();
+    formData.append('attachment', form.attachment.files[0])
+    const job = {
+        title: form.title.value,
+        jobDescription: form.jobDescription.value,
+        projectRate: form.projectRate.value,
+        keyword: form.keyword.value.split('; '),
+        skill: form.skill.value.split('; '),
+        category: form.category.value,
+        subCategory: form.subCategory.value,
+        deadline: form.deadline.value,
+        jobType: form.jobType.value,
+        attachment: form.attachment.value
+    }
+    console.log(job)
+  }
   return (
     <section>
       <Heading>Solve your next project from here</Heading>
@@ -25,10 +46,10 @@ const PostJob = () => {
           Write down your project / job details below and get your work done by
           amazing talents
         </h2>
-        <form className="my-6 mx-4">
+        <form className="my-6 mx-4" onSubmit={handlePostJob}>
           <InputField
             label={"job title"}
-            inputName={"jobTitle"}
+            inputName={"title"}
             inputType={"text"}
           ></InputField>
           <TextArea
@@ -45,20 +66,30 @@ const PostJob = () => {
             label={"keyword"}
             type={"text"}
             name={"keyword"}
-            placeholder={"user ; after one keyword"}
+            placeholder={"use ; after one keyword ex: web; it; tech"}
+          ></TextArea>
+          <TextArea
+            label={"skill"}
+            type={"text"}
+            name={"skill"}
+            placeholder={"use ; after one keyword ex: figma, html; css"}
           ></TextArea>
           <div className="flex flex-col my-2 gap-4">
             <label className="capitalize text-rose-500">
               Choose project category
             </label>
             <select
-              name="companySize"
+              name="category"
               className="w-full p-2 rounded-md border border-rose-500"
               onChange={handleSubCategories}
             >
               <option selected>Chose your project category</option>
               {categories.map((category) => (
-                <option key={category._id} value={category.category} className="capitalize">
+                <option
+                  key={category._id}
+                  value={category.category}
+                  className="capitalize"
+                >
                   {category.category}
                 </option>
               ))}
@@ -66,13 +97,10 @@ const PostJob = () => {
           </div>
           {subCategories && (
             <div className="flex flex-col my-2 gap-4">
-              <label className="capitalize text-rose-500">
-                Sub category
-              </label>
+              <label className="capitalize text-rose-500">Sub category</label>
               <select
-                name="companySize"
+                name="subCategory"
                 className="w-full p-2 rounded-md border border-rose-500"
-                onChange={handleSubCategories}
               >
                 <option selected>Chose your project sub-category</option>
                 {subCategories.subCategories.map((subCategory, idx) => (
@@ -83,6 +111,25 @@ const PostJob = () => {
               </select>
             </div>
           )}
+          <InputField
+            label={"deadline"}
+            inputName={"deadline"}
+            inputType={"date"}
+          ></InputField>
+          <div className="flex flex-col my-2 gap-4">
+            <label className="capitalize text-rose-500">job type</label>
+            <select
+              name="jobType"
+              className="w-full p-2 rounded-md border border-rose-500"
+            >
+              <option selected>Chose job type</option>
+              <option value={"fullTime"}>Full time</option>
+              <option value={"project"}>Project base</option>
+              <option value={"partTime"}>Part time</option>
+            </select>
+          </div>
+          <InputField className={"bg-white"} label={"attach guidance or necessary file if you have any"} inputName={"attachment"} inputType={"file"}></InputField>
+          <InputSubmitForForm type={"submit"} value={"post yor job / project"}></InputSubmitForForm>
         </form>
       </div>
     </section>
