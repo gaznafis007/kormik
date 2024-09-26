@@ -88,8 +88,8 @@ async function run() {
         query = {email: req.query.email}
       };
       const result = await userCollection.findOne(query);
-      console.log(req.query.email)
       // test purpose
+      // console.log(req.query.email)
       // console.log(result)
       res.send(result)
     })
