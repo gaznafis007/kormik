@@ -7,7 +7,6 @@ export const AuthContext = createContext()
 // eslint-disable-next-line react/prop-types
 const AuthProvider = ({children}) => {
     const [user, setUser] = useState()
-
     const [loading, setLoading] = useState(true)
     const axiosSecure = useAxios()
     const auth = getAuth(app)
@@ -35,8 +34,10 @@ const AuthProvider = ({children}) => {
                 currentUser.role = res?.data?.role
                 setUser(currentUser);
                 setLoading(false)
-                console.log(res.data)
-                console.log(currentUser)
+                // test purpose
+
+                // console.log(res.data)
+                // console.log(currentUser)
             })
             }
         })

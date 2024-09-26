@@ -5,6 +5,7 @@ import Signup from "../Pages/Signup/Signup"
 import Signin from "../Pages/Signin/Signin"
 import PostJob from "../Pages/PostJob/PostJob"
 import PrivateRouter from "../Pages/Private/PrivateRouter"
+import Jobs from "../Pages/Jobs/Jobs"
 
 
 
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
             {
                 path:"/postJob",
                 element: <PrivateRouter><PostJob/></PrivateRouter>
+            },
+            {
+                path:"/jobs",
+                element: <Jobs/>
             }
         ]
     }

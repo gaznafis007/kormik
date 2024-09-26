@@ -93,9 +93,14 @@ async function run() {
       res.send(result)
     })
     // job api
-    app.post("/job", async(req,res) =>{
+    app.post("/jobs", async(req,res) =>{
       const job = req.body;
       const result = await jobCollection.insertOne(job);
+      res.send(result)
+    })
+    app.get("/jobs", async(req, res) =>{
+      let query = {};
+      const result = await jobCollection.find(query).toArray();
       res.send(result)
     })
   } finally {

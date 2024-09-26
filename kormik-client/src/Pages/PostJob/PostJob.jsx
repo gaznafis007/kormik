@@ -43,7 +43,7 @@ const PostJob = () => {
         jobType: form.jobType.value,
         attachment: form.attachment.value
     }
-    axiosSecure.post("/job", job)
+    axiosSecure.post("/jobs", job)
     .then(res =>{
         if(res.data.acknowledged){
             Swal.fire({
