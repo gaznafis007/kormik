@@ -89,7 +89,8 @@ async function run() {
       };
       const result = await userCollection.findOne(query);
       console.log(req.query.email)
-      console.log(result)
+      // test purpose
+      // console.log(result)
       res.send(result)
     })
     // job api
