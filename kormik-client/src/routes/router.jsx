@@ -6,6 +6,7 @@ import Signin from "../Pages/Signin/Signin"
 import PostJob from "../Pages/PostJob/PostJob"
 import PrivateRouter from "../Pages/Private/PrivateRouter"
 import Jobs from "../Pages/Jobs/Jobs"
+import Job from "../Pages/Job/Job"
 
 
 
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
             {
                 path:"/jobs",
                 element: <Jobs/>
+            },
+            {
+                path:"/jobs/:id",
+                element: <Job/>
             }
         ]
     }
