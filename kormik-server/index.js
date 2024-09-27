@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 const app = express();
 const data  = require('./data/categories.json')
@@ -102,6 +102,12 @@ async function run() {
     app.get("/jobs", async(req, res) =>{
       let query = {};
       const result = await jobCollection.find(query).toArray();
+      res.send(result)
+    })
+    app.get("/jobs/:id", async(req,res) =>{
+      const id = new ObjectId(req.params.id);
+      const query = {_id: id};
+      const result = await jobCollection.findOne(query);
       res.send(result)
     })
   } finally {
