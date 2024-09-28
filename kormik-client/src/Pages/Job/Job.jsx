@@ -13,6 +13,7 @@ const Job = () => {
     _id,
     title,
     jobPoster,
+    jobPosterMail,
     jobDescription,
     skill,
     projectRate,
@@ -33,11 +34,14 @@ const Job = () => {
     const bidTitle = form.bidTitle.value;
     const bidPrice = form.bidPrice.value;
     const coverLetter = form.coverLetter.value;
-
+    const proposeDate = form.proposeDate.value;
     const bid = {
         bidTitle,
         bidPrice,
         coverLetter,
+        proposeDate,
+        jobPoster,
+        jobPosterMail,
         bidder: user?.displayName,
         bidderEmail: user?.email,
         jobId: _id,
@@ -93,6 +97,7 @@ const Job = () => {
           <form onSubmit={handlePlaceBid} className="bg-gray-800 flex flex-col gap-4 md:w-1/2 mx-4 md:mx-auto rounded-md shadow-md shadow-slate-600 p-8">
           <InputField label={"Bid title"} inputName={"bidTitle"} inputType={"text"}></InputField>
           <InputField label={"your bid (price)"} inputName={"bidPrice"} inputType={"text"}></InputField>
+          <InputField label={"propose your approximate when you can submit"} inputName={"proposeDate"} inputType={"date"}></InputField>
           <TextArea label={"cover letter"} type={"text"} name={"coverLetter"} placeholder={"Throw your best pitch to grab this project"}></TextArea>
           <InputSubmitForForm type={"submit"} value={"place your bid"}/>
           </form>
