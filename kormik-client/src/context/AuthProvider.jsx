@@ -27,7 +27,6 @@ const AuthProvider = ({children}) => {
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
             setUser(currentUser);
-            setLoading(false);
             if(currentUser?.uid){
                 axiosSecure.get(`/users?email=${currentUser.email}`)
             .then(res=>{
