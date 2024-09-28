@@ -8,6 +8,7 @@ import TextArea from "../../Shared/TextArea/TextArea";
 import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
 import ButtonBlock from "../../Shared/ButtonBlock/ButtonBlock";
 import Swal from "sweetalert2";
+import useAxios from "../../hooks/useAxios/useAxios";
 const Job = () => {
   const {
     _id,
@@ -25,8 +26,9 @@ const Job = () => {
   const [bidForm, setBidForm] = useState(false);
   const posted = postDate.split("T")[0];
   const { user, loading } = useAuth();
+  const axiosSecure = useAxios()
   const [bidLoading, setBidLoading] = useState(false)
-  const loadingInstance = <span className="animate-ping">Loading...</span>
+//   const loadingInstance = <span className="animate-ping">Loading...</span>
   const handleStartBiding = () => {
     setBidForm(!bidForm);
   };
@@ -37,6 +39,7 @@ const Job = () => {
     const bidPrice = form.bidPrice.value;
     const coverLetter = form.coverLetter.value;
     const proposeDate = form.proposeDate.value;
+    const milestones = form.milestone.value.split(";")
     const bid = {
         bidTitle,
         bidPrice,
@@ -44,31 +47,43 @@ const Job = () => {
         proposeDate,
         jobPoster,
         jobPosterMail,
+        milestones,
         bidder: user?.displayName,
         bidderEmail: user?.email,
         jobId: _id,
     }
+
     setBidLoading(true)
-    fetch('http://localhost:5000/bids', {
-        method: 'POST',
-        headers:{
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify(bid),
-    })
-    .then(res =>res.json())
-    .then(data =>{
-        if(data.acknowledged){
+    // test purpose
+    // fetch('http://localhost:5000/bids', {
+    //     method: 'POST',
+    //     headers:{
+    //         'content-type': 'application/json'
+    //     },
+    //     body: JSON.stringify(bid),
+    // })
+    // .then(res =>res.json())
+    // .then(data =>{
+    //     if(data.acknowledged){
+    //         setBidLoading(false)
+    //         setBidForm(false)
+    //         Swal.fire({
+    //             title: "Your bid is placed",
+    //             icon: "success"
+    //         })
+    //     }
+    // })    
+    axiosSecure.post("bids", bid)
+    .then(res => {
+        if(res.data.acknowledged){
             setBidLoading(false)
             setBidForm(false)
             Swal.fire({
-                title: "Your bid is placed",
+                title: "Your bid is placed successfully",
                 icon: "success"
             })
         }
     })
-
-    
   }
   if (loading) {
     return (
@@ -117,6 +132,7 @@ const Job = () => {
           <InputField label={"your bid (price)"} inputName={"bidPrice"} inputType={"text"}></InputField>
           <InputField label={"propose your approximate when you can submit"} inputName={"proposeDate"} inputType={"date"}></InputField>
           <TextArea label={"cover letter"} type={"text"} name={"coverLetter"} placeholder={"Throw your best pitch to grab this project"}></TextArea>
+          <TextArea label={"describe your milestone of this project"} type={"text"} name={"milestone"} placeholder={"Please,use ; if you want to work this properly"}></TextArea>
           <InputSubmitForForm type={"submit"} value={bidLoading ? "loading..." : "place your bid"}/>
           </form>
         </>
