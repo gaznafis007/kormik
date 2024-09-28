@@ -26,12 +26,12 @@ const Jobs = () => {
             Rate: {job?.projectRate}
             <br />
             <div className="flex flex-row gap-2 items-center my-4">
-              {job?.skill.map((skill, idx) => (
+              {job?.keyword.map((oneKeyword, idx) => (
                 <p
                   key={idx}
                   className="bg-slate-700 px-2 py-1 text-sm rounded-full text-center"
                 >
-                  {skill}
+                  {oneKeyword}
                 </p>
               ))}
             </div>
