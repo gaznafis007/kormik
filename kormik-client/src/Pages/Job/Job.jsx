@@ -25,6 +25,8 @@ const Job = () => {
   const [bidForm, setBidForm] = useState(false);
   const posted = postDate.split("T")[0];
   const { user, loading } = useAuth();
+  const [bidLoading, setBidLoading] = useState(false)
+  const loadingInstance = <span className="animate-ping">Loading...</span>
   const handleStartBiding = () => {
     setBidForm(!bidForm);
   };
@@ -46,11 +48,27 @@ const Job = () => {
         bidderEmail: user?.email,
         jobId: _id,
     }
-    console.log(bid)
-    Swal.fire({
-        title: "Your bid is placed",
-        icon: "success"
+    setBidLoading(true)
+    fetch('http://localhost:5000/bids', {
+        method: 'POST',
+        headers:{
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(bid),
     })
+    .then(res =>res.json())
+    .then(data =>{
+        if(data.acknowledged){
+            setBidLoading(false)
+            setBidForm(false)
+            Swal.fire({
+                title: "Your bid is placed",
+                icon: "success"
+            })
+        }
+    })
+
+    
   }
   if (loading) {
     return (
@@ -99,7 +117,7 @@ const Job = () => {
           <InputField label={"your bid (price)"} inputName={"bidPrice"} inputType={"text"}></InputField>
           <InputField label={"propose your approximate when you can submit"} inputName={"proposeDate"} inputType={"date"}></InputField>
           <TextArea label={"cover letter"} type={"text"} name={"coverLetter"} placeholder={"Throw your best pitch to grab this project"}></TextArea>
-          <InputSubmitForForm type={"submit"} value={"place your bid"}/>
+          <InputSubmitForForm type={"submit"} value={bidLoading ? "loading..." : "place your bid"}/>
           </form>
         </>
       )}

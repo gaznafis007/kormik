@@ -46,6 +46,7 @@ async function run() {
     const categoriesCollection = client.db('kormikDB').collection('categories');
     const userCollection = client.db('kormikDB').collection('users');
     const jobCollection = client.db('kormikDB').collection('jobs')
+    const bidCollection = client.db('kormikDB').collection('bids')
 
     // api-s
 
@@ -108,6 +109,12 @@ async function run() {
       const id = new ObjectId(req.params.id);
       const query = {_id: id};
       const result = await jobCollection.findOne(query);
+      res.send(result)
+    })
+    // bids api
+    app.post("/bids", async(req, res) =>{
+      const bid = req.body;
+      const result = await bidCollection.insertOne(bid);
       res.send(result)
     })
   } finally {
