@@ -117,6 +117,15 @@ async function run() {
       const result = await bidCollection.insertOne(bid);
       res.send(result)
     })
+    app.get("/bids", async(req, res) =>{
+      let query = {};
+      if(req.query.jobId){
+        const jobId = req.query.jobId
+        query = {jobId: jobId}
+      }
+      const result = await bidCollection.find(query).toArray();
+      res.send(result)
+    })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
