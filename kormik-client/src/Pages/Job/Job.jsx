@@ -123,7 +123,7 @@ const Job = () => {
         {`${projectRate} $`}
       </JobSpecification>
       </div>
-      <Bids></Bids>
+      <Bids jobId={_id}></Bids>
       </div>
       <JobSpecification title={"deadline"}>{deadline}</JobSpecification>
       {user.role === "freelancer" &&
