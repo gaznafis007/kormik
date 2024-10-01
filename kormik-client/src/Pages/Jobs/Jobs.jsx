@@ -1,21 +1,39 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import useAxios from "../../hooks/useAxios/useAxios";
 import Heading from "../../Shared/Heading/Heading";
 import Card from "../../Shared/Card/Card";
 import { ArrowLongRightIcon } from "@heroicons/react/24/outline";
+import JobSearch from "../Job/JobSearch/JobSearch";
+import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
+import { useEffect, useState } from "react";
+import useAxios from "../../hooks/useAxios/useAxios";
 
 const Jobs = () => {
-  const [jobs, setJobs] = useState([]);
-  const axiosSecure = useAxios();
-  useEffect(() => {
-    axiosSecure.get("/jobs").then((res) => {
-      setJobs(res.data);
-    });
-  }, []);
+  const [jobs] = useAxiosForData("/jobs")
+  const [categories] = useAxiosForData("/categories")
+  const [isLoading, setIsLoading] = useState(true)
+  const [subCategories, setSubCategories] = useState(null)
+    const axiosSecure = useAxios()
+    const handleSubCategories = (event) => {
+        event.preventDefault();
+        const category = event.target.value;
+        // for test purpose
+        // console.log(category);
+        axiosSecure.get(`/subCategories/${category}`).then((res) => {
+          setSubCategories(res.data);
+        });
+      };
+  useEffect(() =>{
+    if(categories && jobs){
+      setIsLoading(false)
+    }
+  },[])
+  // if(isLoading){
+  //   return <h2 className="text-2xl text-center text-rose-500 font-sans font-semibold animate-ping">Loading...</h2>
+  // }
   return (
     <div>
       <Heading>Search your desire project</Heading>
+      <JobSearch categories={categories} isLoading={isLoading} subCategories={subCategories} handleSubCategories={handleSubCategories}></JobSearch>
       <h2 className="my-8 text-rose-600 text-3xl text-center font-semibold font-sans">
         {" "}
         Total Job: {jobs.length}
