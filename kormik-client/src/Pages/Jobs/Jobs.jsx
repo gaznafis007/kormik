@@ -15,7 +15,7 @@ const Jobs = () => {
   }, []);
   return (
     <div>
-      <Heading>Find job page is landing soon...</Heading>
+      <Heading>Search your desire project</Heading>
       <h2 className="my-8 text-rose-600 text-3xl text-center font-semibold font-sans">
         {" "}
         Total Job: {jobs.length}
