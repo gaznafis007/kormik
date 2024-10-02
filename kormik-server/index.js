@@ -102,6 +102,17 @@ async function run() {
     })
     app.get("/jobs", async(req, res) =>{
       let query = {};
+      if(req.query){
+        if(req.query.title){
+          query = {title: { $regex: req.query.title, $options: 'i' }}
+        }
+        if(req.query.category){
+          query = {category: req.query.category}
+        }
+        if(req.query.subCategory){
+          query = {subCategory: req.query.subCategory}
+        }
+      }
       const result = await jobCollection.find(query).toArray();
       res.send(result)
     })

@@ -1,19 +1,10 @@
 /* eslint-disable react/prop-types */
-
-import Button from "../../../Shared/Button/Button";
 import InputField from "../../../Shared/InputField/InputField";
 import InputSubmitForForm from "../../../Shared/InputSubmitForForm/InputSubmitForForm";
 
 
-const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading }) => {
-    const handleSearch = event =>{
-        event.preventDefault()
-        const form = event.target;
-        const title = form.title.value;
-        const category = form.category.value;
-        const subCategory = form.subCategory.value;
-        console.log(title, category, subCategory)
-    }
+const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading, handleSearch, handleTitleSearch }) => {
+    
 
   if (isLoading) {
     return (
@@ -26,6 +17,7 @@ const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading }
     <form onSubmit={handleSearch} className="p-4 my-6">
       <div className="grid grid-col-1 md:grid-cols-3 gap-4">
       <InputField
+        handler={handleTitleSearch}
         inputName={"title"}
         inputType={"text"}
         label={"job title"}
@@ -39,7 +31,7 @@ const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading }
           className="w-full p-2 rounded-md border border-rose-500"
           onChange={handleSubCategories}
         >
-          <option selected>Chose your project category</option>
+          <option value={''} selected>Chose your project category</option>
           {categories &&
             categories?.map((category) => (
               <option
@@ -59,7 +51,7 @@ const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading }
                 name="subCategory"
                 className="w-full p-2 rounded-md border border-rose-500"
               >
-                <option selected>Chose your project sub-category</option>
+                <option value={''} selected>Chose your project sub-category</option>
                 {
                 subCategories?.subCategories?.map((subCategory, idx) => (
                   <option key={idx} className="capitalize" value={subCategory}>

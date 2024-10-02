@@ -8,32 +8,56 @@ import { useEffect, useState } from "react";
 import useAxios from "../../hooks/useAxios/useAxios";
 
 const Jobs = () => {
-  const [jobs] = useAxiosForData("/jobs")
-  const [categories] = useAxiosForData("/categories")
-  const [isLoading, setIsLoading] = useState(true)
-  const [subCategories, setSubCategories] = useState(null)
-    const axiosSecure = useAxios()
-    const handleSubCategories = (event) => {
-        event.preventDefault();
-        const category = event.target.value;
-        // for test purpose
-        // console.log(category);
-        axiosSecure.get(`/subCategories/${category}`).then((res) => {
-          setSubCategories(res.data);
-        });
-      };
-  useEffect(() =>{
-    if(categories && jobs){
+  const [jobs, setJobs] = useState([])
+  const [categories] = useAxiosForData("/categories");
+  const [isLoading, setIsLoading] = useState(true);
+  const [subCategories, setSubCategories] = useState(null);
+  const axiosSecure = useAxios();
+  const handleSubCategories = (event) => {
+    event.preventDefault();
+    const category = event.target.value;
+    axiosSecure.get(`/subCategories/${category}`).then((res) => {
+      setSubCategories(res.data);
+    });
+  };
+  const handleTitleSearch = event =>{
+    event.preventDefault();
+    const title = event.target.value;
+    if(title.length > 2){
+      axiosSecure.get(`/jobs?title=${title}`).then(res =>{
+        console.log(res.data);
+        setJobs(res.data);
+      })
+    }
+  }
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const title = form.title.value;
+    const category = encodeURIComponent(form.category.value);
+    const subCategory = encodeURIComponent(form.subCategory.value);
+    axiosSecure.get(`/jobs?title=${title}&category=${category}&subCategory=${subCategory}`).then(res => setJobs(res.data))
+  }
+  useEffect(() => {
+    axiosSecure.get('/jobs').then(res => setJobs(res.data))
+    if(jobs && categories){
       setIsLoading(false)
     }
-  },[])
+  }, []);
   // if(isLoading){
   //   return <h2 className="text-2xl text-center text-rose-500 font-sans font-semibold animate-ping">Loading...</h2>
   // }
   return (
     <div>
       <Heading>Search your desire project</Heading>
-      <JobSearch categories={categories} isLoading={isLoading} subCategories={subCategories} handleSubCategories={handleSubCategories}></JobSearch>
+      <JobSearch
+        categories={categories}
+        isLoading={isLoading}
+        subCategories={subCategories}
+        handleSubCategories={handleSubCategories}
+        handleSearch={handleSearch}
+        handleTitleSearch={handleTitleSearch}
+      ></JobSearch>
       <h2 className="my-8 text-rose-600 text-3xl text-center font-semibold font-sans">
         {" "}
         Total Job: {jobs.length}
