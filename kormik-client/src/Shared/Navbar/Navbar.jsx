@@ -51,7 +51,8 @@ const Navbar = () => {
         </Link>
       </li>
       {user?.uid ? (
-        <li>
+        <li className="flex flex-col md:flex-row gap-7 items-center capitalize">
+          <Link to="/dashboard" className="hover:pb-2 px-2 hover:border-b-2 hover:border-rose-600">dashboard</Link>
           <Button handler={handleLogOut}>logout</Button>
         </li>
       ) : (

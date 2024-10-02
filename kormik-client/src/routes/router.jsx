@@ -7,6 +7,7 @@ import PostJob from "../Pages/PostJob/PostJob"
 import PrivateRouter from "../Pages/Private/PrivateRouter"
 import Jobs from "../Pages/Jobs/Jobs"
 import Job from "../Pages/Job/Job"
+import Dashboard from "../Pages/Dashboard/Dashboard"
 
 
 
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
                 path:"/jobs/:id",
                 element: <PrivateRouter><Job/></PrivateRouter>,
                 loader: ({params})=> fetch(`http://localhost:5000/jobs/${params.id}`)
+            },
+            {
+                path:"/dashboard",
+                element: <PrivateRouter><Dashboard/></PrivateRouter>
             }
         ]
     }
