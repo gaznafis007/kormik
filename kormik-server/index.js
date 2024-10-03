@@ -112,6 +112,9 @@ async function run() {
         if(req.query.subCategory){
           query = {subCategory: req.query.subCategory}
         }
+        if(req.query.jobType){
+          query = {jobType: req.query.jobType}
+        }
       }
       const result = await jobCollection.find(query).toArray();
       res.send(result)
