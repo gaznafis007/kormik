@@ -12,7 +12,7 @@ const PostJob = () => {
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
   const axiosSecure = useAxios();
-  const {user} = useAuth()
+  const { user } = useAuth();
   const handleSubCategories = (event) => {
     event.preventDefault();
     const category = event.target.value;
@@ -22,44 +22,45 @@ const PostJob = () => {
       setSubCategories(res.data);
     });
   };
-  const handlePostJob = event =>{
-    event.preventDefault()
+  const handlePostJob = (event) => {
+    event.preventDefault();
     const form = event.target;
     const formData = new FormData();
-    formData.append('attachment', form.attachment.files[0])
-    const postDate = new Date()
+    formData.append("attachment", form.attachment.files[0]);
+    const postDate = new Date();
     const job = {
-        title: form.title.value,
-        jobPoster: user?.displayName,
-        jobPosterMail: user?.email,
-        jobDescription: form.jobDescription.value,
-        projectRate: form.projectRate.value,
-        keyword: form.keyword.value.split('; '),
-        skill: form.skill.value.split('; '),
-        postDate,
-        category: form.category.value,
-        subCategory: form.subCategory.value,
-        deadline: form.deadline.value,
-        jobType: form.jobType.value,
-        attachment: form.attachment.value
-    }
-    axiosSecure.post("/jobs", job)
-    .then(res =>{
-        if(res.data.acknowledged){
-            Swal.fire({
-                title: `Congrats, your job / project for ${form.title.value} is posted`,
-                icon: "success"
-            })
-        }
-    })
-  }
-  
-  if(user?.role === "freelancer"){
+      title: form.title.value,
+      jobPoster: user?.displayName,
+      jobPosterMail: user?.email,
+      jobDescription: form.jobDescription.value,
+      projectRate: form.projectRate.value,
+      keyword: form.keyword.value.split("; "),
+      skill: form.skill.value.split("; "),
+      postDate,
+      category: form.category.value,
+      subCategory: form.subCategory.value,
+      deadline: form.deadline.value,
+      jobType: form.jobType.value,
+      attachment: form.attachment.value,
+    };
+    axiosSecure.post("/jobs", job).then((res) => {
+      if (res.data.acknowledged) {
+        Swal.fire({
+          title: `Congrats, your job / project for ${form.title.value} is posted`,
+          icon: "success",
+        });
+      }
+    });
+  };
+
+  if (user?.role === "freelancer") {
     return (
-        <>
-        <Heading>this is to hire people for your project  not to find job / project</Heading>
-    </>
-    )
+      <>
+        <Heading>
+          this is to hire people for your project not to find job / project
+        </Heading>
+      </>
+    );
   }
   return (
     <section>
@@ -151,8 +152,16 @@ const PostJob = () => {
               <option value={"partTime"}>Part time</option>
             </select>
           </div>
-          <InputField className={"bg-white"} label={"attach guidance or necessary file if you have any"} inputName={"attachment"} inputType={"file"}></InputField>
-          <InputSubmitForForm type={"submit"} value={"post yor job / project"}></InputSubmitForForm>
+          <InputField
+            className={"bg-white"}
+            label={"attach guidance or necessary file if you have any"}
+            inputName={"attachment"}
+            inputType={"file"}
+          ></InputField>
+          <InputSubmitForForm
+            type={"submit"}
+            value={"post yor job / project"}
+          ></InputSubmitForForm>
         </form>
       </div>
     </section>

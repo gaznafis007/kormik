@@ -3,7 +3,7 @@ import InputField from "../../../Shared/InputField/InputField";
 import InputSubmitForForm from "../../../Shared/InputSubmitForForm/InputSubmitForForm";
 
 
-const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading, handleSearch, handleTitleSearch }) => {
+const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading, handleSearch, handleTitleSearch, handleJobTypeSearch }) => {
     
 
   if (isLoading) {
@@ -63,6 +63,19 @@ const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading, 
           )
         }
       </div>
+      <div className="flex flex-col my-2 gap-4 w-full md:w-1/3">
+            <label className="capitalize text-rose-500">job type</label>
+            <select
+              name="jobType"
+              className="w-full p-2 rounded-md border border-rose-500"
+              onChange={handleJobTypeSearch}
+            >
+              <option selected>Chose job type</option>
+              <option value={"fullTime"}>Full time</option>
+              <option value={"project"}>Project base</option>
+              <option value={"partTime"}>Part time</option>
+            </select>
+          </div>
         <InputSubmitForForm type={"submit"} value={"search"}></InputSubmitForForm>
     </form>
   );

@@ -30,13 +30,19 @@ const Jobs = () => {
       })
     }
   }
+  const handleJobTypeSearch = event =>{
+    event.preventDefault();
+    const jobType = event.target.value;
+    axiosSecure.get(`/jobs?jobType=${jobType}`).then(res =>setJobs(res.data))
+  }
   const handleSearch = (event) => {
     event.preventDefault();
     const form = event.target;
     const title = form.title.value;
     const category = encodeURIComponent(form.category.value);
     const subCategory = encodeURIComponent(form.subCategory.value);
-    axiosSecure.get(`/jobs?title=${title}&category=${category}&subCategory=${subCategory}`).then(res => setJobs(res.data))
+    const jobType = form.jobType.value
+    axiosSecure.get(`/jobs?title=${title}&category=${category}&subCategory=${subCategory}&jobType=${jobType}`).then(res => setJobs(res.data))
   }
   useEffect(() => {
     axiosSecure.get('/jobs').then(res => setJobs(res.data))
@@ -57,6 +63,7 @@ const Jobs = () => {
         handleSubCategories={handleSubCategories}
         handleSearch={handleSearch}
         handleTitleSearch={handleTitleSearch}
+        handleJobTypeSearch={handleJobTypeSearch}
       ></JobSearch>
       <h2 className="my-8 text-rose-600 text-3xl text-center font-semibold font-sans">
         {" "}
