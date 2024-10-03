@@ -36,13 +36,18 @@ const Jobs = () => {
     axiosSecure.get(`/jobs?jobType=${jobType}`).then(res =>setJobs(res.data))
   }
   const handleSearch = (event) => {
+    setIsLoading(true)
     event.preventDefault();
     const form = event.target;
     const title = form.title.value;
     const category = encodeURIComponent(form.category.value);
     const subCategory = encodeURIComponent(form.subCategory.value);
     const jobType = form.jobType.value
-    axiosSecure.get(`/jobs?title=${title}&category=${category}&subCategory=${subCategory}&jobType=${jobType}`).then(res => setJobs(res.data))
+    axiosSecure.get(`/jobs?title=${title}&category=${category}&subCategory=${subCategory}&jobType=${jobType}`).then(res =>{
+      console.log(res.data);
+      setJobs(res.data);
+      setIsLoading(false)
+    })
   }
   useEffect(() => {
     axiosSecure.get('/jobs').then(res => setJobs(res.data))

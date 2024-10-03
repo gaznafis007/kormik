@@ -116,6 +116,7 @@ async function run() {
           query = {jobType: req.query.jobType}
         }
       }
+      console.log(query)
       const result = await jobCollection.find(query).toArray();
       res.send(result)
     })

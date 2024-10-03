@@ -70,7 +70,7 @@ const JobSearch = ({ categories, subCategories, handleSubCategories, isLoading, 
               className="w-full p-2 rounded-md border border-rose-500"
               onChange={handleJobTypeSearch}
             >
-              <option selected>Chose job type</option>
+              <option selected value={''}>Chose job type</option>
               <option value={"fullTime"}>Full time</option>
               <option value={"project"}>Project base</option>
               <option value={"partTime"}>Part time</option>
