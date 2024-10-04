@@ -122,6 +122,7 @@ const Job = () => {
       <JobSpecification title={"Salary / Compensation / Rate"}>
         {`${projectRate} $`}
       </JobSpecification>
+      <JobSpecification title={"deadline"}>{deadline}</JobSpecification>
       </div>
       {
         user?.email === jobPosterMail && (
@@ -129,7 +130,6 @@ const Job = () => {
         )
       }
       </div>
-      <JobSpecification title={"deadline"}>{deadline}</JobSpecification>
       {user.role === "freelancer" &&
         !isBidSubmitted &&
         (bidForm ? (

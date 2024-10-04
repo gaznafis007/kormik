@@ -146,8 +146,21 @@ async function run() {
       if(req.query.bidderEmail){
         query = {bidderEmail}
       }
-      console.log(query)
+      // console.log(query)
       const result = await bidCollection.find(query).toArray();
+      res.send(result)
+    })
+    app.put("/bids/:id", async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const status = req.body.status
+      const updatedDoc = {
+        $set:{
+          status
+        }
+      }
+      const options = {upsert: true}
+      const result = await bidCollection.updateOne(query,updatedDoc, options)
       res.send(result)
     })
     app.delete("/bids/:id", async(req,res) =>{

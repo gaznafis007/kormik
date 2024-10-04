@@ -3,7 +3,6 @@ import useAxios from "../../../../hooks/useAxios/useAxios";
 import Heading from "../../../../Shared/Heading/Heading";
 import Card from "../../../../Shared/Card/Card";
 import Button from "../../../../Shared/Button/Button";
-
 import { ChevronDownIcon, ChevronUpIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Swal from "sweetalert2";
 
@@ -31,12 +30,22 @@ const Bids = ({ jobId }) => {
   }
   const handleBidWinner = id =>{
     console.log(id)
+    const winner = {status: "winner"}
+    axiosSecure.put(`/bids/${id}`, winner)
+    .then(res =>{
+      if(res.data.modifiedCount > 0){
+        Swal.fire({
+          title: "Congrats! your project got talent as per your choice",
+          icon: "success"
+        })
+      }
+    })
   }
   useEffect(() => {
     axiosSecure.get(`/bids?jobId=${jobId}`).then((res) => setBids(res.data));
   }, []);
   return (
-    <div className="p-6 border-2 rounded-md border-slate-900 shadow-md shadow-slate-300">
+    <div className="p-6 overflow-y-auto border-2 rounded-md border-slate-900 shadow-md shadow-slate-300">
       <Heading>All the pitches</Heading>
       <div className="flex flex-col gap-4">
       {
