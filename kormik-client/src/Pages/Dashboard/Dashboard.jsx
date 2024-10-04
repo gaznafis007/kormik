@@ -11,6 +11,7 @@ const Dashboard = () => {
   const axiosSecure = useAxios();
   const [profile, setProfile] = useState();
   const [projects] = useAxiosForData(`/jobs?jobPosterMail=${user?.email}`);
+  const [bids] = useAxiosForData(`/bids?bidderEmail=${user?.email}`)
   useEffect(() => {
     axiosSecure.get(`/users?email=${user?.email}`).then((res) => {
       setProfile(res.data);
@@ -19,7 +20,7 @@ const Dashboard = () => {
     });
   }, []);
   return (
-    <section className="p-6 flex flex-col md:flex-row justify-between">
+    <section className="p-6 mx-2 flex flex-col md:flex-row justify-between">
       <div>
         <div className="flex flex-col gap-4">
           <UserCircleIcon className="size-32 p-2 border-2 border-white text-white" />
@@ -58,6 +59,15 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+      {
+        profile?.role === 'freelancer' && (
+            <div className="p-4 bg-slate-800 rounded-md">
+                    <h2 className="text-2xl text-rose-500 font-semibold capitalize">
+                Bids you won: {bids.length}
+          </h2>
+            </div>
+        )
+      }
     </section>
   );
 };

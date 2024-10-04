@@ -120,7 +120,7 @@ async function run() {
           query= {jobPosterMail}
         }
       }
-      console.log(query)
+      // console.log(query)
       const result = await jobCollection.find(query).toArray();
       res.send(result)
     })
@@ -138,10 +138,15 @@ async function run() {
     })
     app.get("/bids", async(req, res) =>{
       let query = {};
+      let bidderEmail = req.query.bidderEmail
       if(req.query.jobId){
         const jobId = req.query.jobId
         query = {jobId: jobId}
       }
+      if(req.query.bidderEmail){
+        query = {bidderEmail}
+      }
+      console.log(query)
       const result = await bidCollection.find(query).toArray();
       res.send(result)
     })
