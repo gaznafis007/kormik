@@ -97,7 +97,7 @@ const Signup = () => {
       availability: form.availability.value,
       userProfileImage: formData,
     };
-    console.log("freelancer", freelancer);
+    // console.log("freelancer", freelancer);
     register(freelancer?.email, freelancer?.password)
     .then(res=>{
       const user = res.user;

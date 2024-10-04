@@ -102,6 +102,7 @@ async function run() {
     })
     app.get("/jobs", async(req, res) =>{
       let query = {};
+      let jobPosterMail = req.query.jobPosterMail
       if(req.query){
         if(req.query.title){
           query = {title: { $regex: req.query.title, $options: 'i' }}
@@ -114,6 +115,9 @@ async function run() {
         }
         if(req.query.jobType){
           query = {jobType: req.query.jobType}
+        }
+        if(req.query.jobPosterMail){
+          query= {jobPosterMail}
         }
       }
       console.log(query)
