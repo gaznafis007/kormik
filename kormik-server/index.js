@@ -47,6 +47,7 @@ async function run() {
     const userCollection = client.db('kormikDB').collection('users');
     const jobCollection = client.db('kormikDB').collection('jobs')
     const bidCollection = client.db('kormikDB').collection('bids')
+    const winningBidCollection = client.db('kormikDB').collection('winningBid')
 
     // api-s
 
@@ -180,6 +181,13 @@ async function run() {
       const id = req.params.id;
       const query = {_id : new ObjectId(id)};
       const result = await bidCollection.deleteOne(query);
+      res.send(result)
+    })
+
+    // winners-api
+    app.post("/winners", async(req,res) =>{
+      const winner = req.body.winningBid
+      const result = await winningBidCollection.insertOne(winner);
       res.send(result)
     })
   } finally {
