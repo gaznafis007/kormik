@@ -28,15 +28,23 @@ const Bids = ({ jobId }) => {
         }
     })
   }
-  const handleBidWinner = id =>{
-    console.log(id)
+  const handleBidWinner = ids =>{
+    console.log(ids[0])
+    console.log(ids[1])
+    console.log(ids)
+    const bidId = {bidId: ids[0]}
     const winner = {status: "winner"}
-    axiosSecure.put(`/bids/${id}`, winner)
+    axiosSecure.put(`/bids/${ids[0]}`, winner)
     .then(res =>{
       if(res.data.modifiedCount > 0){
-        Swal.fire({
-          title: "Congrats! your project got talent as per your choice",
-          icon: "success"
+        axiosSecure.put(`/jobs/${ids[1]}`, bidId)
+        .then(res => {
+          if(res.data.modifiedCount > 0){
+            Swal.fire({
+              title: "congrats!, you chose your talent",
+              icon: "success"
+            })
+          }
         })
       }
     })
@@ -80,8 +88,8 @@ const Bids = ({ jobId }) => {
                         ))}
                       </ul>
                       <div className="flex flex-col md:flex-row">
-                      <Button handler={handleBidWinner} params={bid?._id}>Choose this bid for your project</Button>
-                      <Button handler={handleDelete} params={bid._id}>
+                      <Button handler={handleBidWinner} params={[bid?._id, bid?.jobId]}>Choose this bid for your project</Button>
+                      <Button handler={handleDelete} params={bid?._id}>
                         <TrashIcon className="size-6"></TrashIcon>
                       </Button>
                       </div>

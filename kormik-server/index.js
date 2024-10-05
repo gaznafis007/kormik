@@ -130,6 +130,19 @@ async function run() {
       const result = await jobCollection.findOne(query);
       res.send(result)
     })
+    app.put("/jobs/:id", async(req, res) =>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const winnerId = req.body.bidId
+      const updatedDoc = {
+        $set:{
+          winnerId
+        }
+      }
+      const options = {upsert: true};
+      const result = await jobCollection.updateOne(query, updatedDoc, options)
+      res.send(result)
+    })
     // bids api
     app.post("/bids", async(req, res) =>{
       const bid = req.body;

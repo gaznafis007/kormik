@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import Card from "../../Shared/Card/Card";
 import { Link } from "react-router-dom";
 const Dashboard = () => {
-  const { user, isLoading } = useAuth();
+  const { user, setLoading } = useAuth();
   const axiosSecure = useAxios();
   const [profile, setProfile] = useState();
   const [projects] = useAxiosForData(`/jobs?jobPosterMail=${user?.email}`);
@@ -15,7 +15,7 @@ const Dashboard = () => {
   useEffect(() => {
     axiosSecure.get(`/users?email=${user?.email}`).then((res) => {
       setProfile(res.data);
-      isLoading(false);
+      setLoading(false);
       toast.success(`welcome ${res.data?.name}`);
     });
   }, []);
