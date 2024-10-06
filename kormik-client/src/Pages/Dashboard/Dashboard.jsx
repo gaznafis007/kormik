@@ -11,7 +11,7 @@ const Dashboard = () => {
   const axiosSecure = useAxios();
   const [profile, setProfile] = useState();
   const [projects] = useAxiosForData(`/jobs?jobPosterMail=${user?.email}`);
-  const [bids] = useAxiosForData(`/bids?bidderEmail=${user?.email}`)
+  const [bids] = useAxiosForData(`/winners?bidderEmail=${user?.email}`)
   useEffect(() => {
     axiosSecure.get(`/users?email=${user?.email}`).then((res) => {
       setProfile(res.data);

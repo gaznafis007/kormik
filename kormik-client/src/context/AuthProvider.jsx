@@ -53,6 +53,7 @@ const AuthProvider = ({children}) => {
         myInitials,
         user,
         loading,
+        setLoading,
         register,
         logIn,
         getProfile,

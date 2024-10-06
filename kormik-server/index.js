@@ -190,6 +190,14 @@ async function run() {
       const result = await winningBidCollection.insertOne(winner);
       res.send(result)
     })
+    app.get("/winners", async(req,res) =>{
+      let query={};
+      if(req.query.bidderEmail){
+        query = {bidderEmail: req.query.bidderEmail}
+      }
+      const result = await winningBidCollection.find(query).toArray();
+      res.send(result)
+    })
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
