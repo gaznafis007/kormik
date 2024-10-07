@@ -11,7 +11,7 @@ const Dashboard = () => {
   const axiosSecure = useAxios();
   const [profile, setProfile] = useState();
   const [projects] = useAxiosForData(`/jobs?jobPosterMail=${user?.email}`);
-  const [bids] = useAxiosForData(`/winners?bidderEmail=${user?.email}`)
+  const [bids] = useAxiosForData(`/winners?bidderEmail=${user?.email}`);
   useEffect(() => {
     axiosSecure.get(`/users?email=${user?.email}`).then((res) => {
       setProfile(res.data);
@@ -59,15 +59,26 @@ const Dashboard = () => {
           </div>
         </div>
       )}
-      {
-        profile?.role === 'freelancer' && (
-            <div className="p-4 bg-slate-800 rounded-md">
-                    <h2 className="text-2xl text-rose-500 font-semibold capitalize">
-                Bids you won: {bids.length}
+      {profile?.role === "freelancer" && (
+        <div className="p-4 bg-slate-800 rounded-md w-1/2">
+          <h2 className="text-2xl text-rose-500 font-semibold capitalize">
+            Bids you won: {bids.length}
           </h2>
-            </div>
-        )
-      }
+          <div className="grid grid-col-1 md:grid-cols-2 lg:grid-cols-4 gap-4 my-4">
+            {bids.map((bid) => (
+              <Card key={bid._id} title={bid?.bidTitle}>
+                <Link
+                  to={`/jobs/${bid.jobId}`}
+                  className="flex flex-row gap-3 justify-between items-center text-rose-500 my-4"
+                >
+                  Checkout{" "}
+                  <ArrowLongRightIcon className="size-6 text-rose-500 hover:size-7"></ArrowLongRightIcon>
+                </Link>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 };

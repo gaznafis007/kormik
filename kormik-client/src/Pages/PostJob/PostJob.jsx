@@ -7,8 +7,16 @@ import useAxios from "../../hooks/useAxios/useAxios";
 import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
 import useAuth from "../../hooks/useAuth/useAuth";
 import Swal from "sweetalert2";
+import { FileUploader } from "react-drag-drop-files";
+import DragAndDrop from "../../Shared/DragAndDrop/DragAndDrop";
 
 const PostJob = () => {
+  const fileTypes = ["PDF", "JPEG", "PNG", "XLSX"];
+  const [file, setFile] = useState(null);
+  const handleChange = (file) => {
+    setFile(file);
+    console.log(file)
+  };
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
   const axiosSecure = useAxios();
@@ -25,8 +33,8 @@ const PostJob = () => {
   const handlePostJob = (event) => {
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData();
-    formData.append("attachment", form.attachment.files[0]);
+    // const formData = new FormData();
+    // formData.append("attachment", form.attachment.files[0]);
     const postDate = new Date();
     const job = {
       title: form.title.value,
@@ -41,16 +49,17 @@ const PostJob = () => {
       subCategory: form.subCategory.value,
       deadline: form.deadline.value,
       jobType: form.jobType.value,
-      attachment: form.attachment.value,
+      attachment: form.attachment,
     };
-    axiosSecure.post("/jobs", job).then((res) => {
-      if (res.data.acknowledged) {
-        Swal.fire({
-          title: `Congrats, your job / project for ${form.title.value} is posted`,
-          icon: "success",
-        });
-      }
-    });
+    console.log(job)
+    // axiosSecure.post("/jobs", job).then((res) => {
+    //   if (res.data.acknowledged) {
+    //     Swal.fire({
+    //       title: `Congrats, your job / project for ${form.title.value} is posted`,
+    //       icon: "success",
+    //     });
+    //   }
+    // });
   };
 
   if (user?.role === "freelancer") {
@@ -152,12 +161,26 @@ const PostJob = () => {
               <option value={"partTime"}>Part time</option>
             </select>
           </div>
-          <InputField
+          {/* <InputField
             className={"bg-white"}
             label={"attach guidance or necessary file if you have any"}
             inputName={"attachment"}
             inputType={"file"}
-          ></InputField>
+          ></InputField> */}
+          <DragAndDrop
+            name={"attachment"}
+            fileTypes={fileTypes}
+            label={"upload your file here"}
+            placeholder={"Drag or drop your file here"}
+            handler={handleChange}
+            file={file}
+          >
+            {
+              file && (
+                <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500">{file.name}</p>
+              )
+            }
+          </DragAndDrop>
           <InputSubmitForForm
             type={"submit"}
             value={"post yor job / project"}
