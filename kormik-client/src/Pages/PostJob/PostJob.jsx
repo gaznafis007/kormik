@@ -8,28 +8,39 @@ import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForFo
 import useAuth from "../../hooks/useAuth/useAuth";
 import Swal from "sweetalert2";
 import DragAndDrop from "../../Shared/DragAndDrop/DragAndDrop";
+import { keyValues } from "../../../keys";
+import axios from "axios";
 
 const PostJob = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fileURL, setFileURL] = useState("");
   const fileTypes = ["PDF", "JPEG", "PNG", "XLSX"];
-  const [file, setFile] = useState(null);
+  const [attachment, setAttachment] = useState(null);
   const handleChange = async (file) => {
-    setIsLoading(true);
-    setFile(file);
-    console.log(file);
+    if(!file){
+      return
+    }
+  const formData = new FormData();
+  setIsLoading(true)
+  setAttachment(file)
+  formData.append('file', file)
+  formData.append('upload_preset', 'quiqhqhf')
     try {
-      axiosSecure
+      axios
         .post(
-          `https://api.cloudinary.com/v1_1/${
-            import.meta.env.CLOUD_NAME
-          }/raw/upload`,
-          file
+          `https://api.cloudinary.com/v1_1/${keyValues.cloudName}/upload`,
+          formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
         )
         .then((res) => {
           console.log(res.data);
+          setFileURL(res.data.secure_url)
           setIsLoading(false);
         });
+            
     } catch (error) {
       console.error(error);
       setIsLoading(false);
@@ -67,17 +78,18 @@ const PostJob = () => {
       subCategory: form.subCategory.value,
       deadline: form.deadline.value,
       jobType: form.jobType.value,
-      attachment: form.attachment,
+      attachment: fileURL,
     };
     console.log(job);
-    // axiosSecure.post("/jobs", job).then((res) => {
-    //   if (res.data.acknowledged) {
-    //     Swal.fire({
-    //       title: `Congrats, your job / project for ${form.title.value} is posted`,
-    //       icon: "success",
-    //     });
-    //   }
-    // });
+    axiosSecure.post("/jobs", job).then((res) => {
+      if (res.data.acknowledged) {
+        Swal.fire({
+          title: `Congrats, your job / project for ${form.title.value} is posted`,
+          icon: "success",
+        });
+        form.reset()
+      }
+    });
   };
 
   if (user?.role === "freelancer") {
@@ -191,11 +203,11 @@ const PostJob = () => {
             label={"upload your file here"}
             placeholder={"Drag or drop your file here"}
             handler={handleChange}
-            file={file}
+            file={attachment}
           >
-            {file && (
+            {attachment && !isLoading && (
               <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500">
-                {file.name}
+                {attachment.name}
               </p>
             )}
             {isLoading && (
