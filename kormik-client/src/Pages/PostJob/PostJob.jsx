@@ -33,11 +33,12 @@ const PostJob = () => {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
+            params: {resource_type: 'raw'}
           }
         )
         .then((res) => {
           console.log(res.data);
-          setFileURL(res.data.secure_url)
+          setFileURL(res.data?.secure_url)
           setIsLoading(false);
         });
             
@@ -81,15 +82,15 @@ const PostJob = () => {
       attachment: fileURL,
     };
     console.log(job);
-    axiosSecure.post("/jobs", job).then((res) => {
-      if (res.data.acknowledged) {
-        Swal.fire({
-          title: `Congrats, your job / project for ${form.title.value} is posted`,
-          icon: "success",
-        });
-        form.reset()
-      }
-    });
+    // axiosSecure.post("/jobs", job).then((res) => {
+    //   if (res.data.acknowledged) {
+    //     Swal.fire({
+    //       title: `Congrats, your job / project for ${form.title.value} is posted`,
+    //       icon: "success",
+    //     });
+    //     form.reset()
+    //   }
+    // });
   };
 
   if (user?.role === "freelancer") {

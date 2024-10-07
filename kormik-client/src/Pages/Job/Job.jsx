@@ -23,6 +23,7 @@ const Job = () => {
     postDate,
     category,
     jobType,
+    attachment
   } = useLoaderData();
   const [bidForm, setBidForm] = useState(false);
   const posted = postDate.split("T")[0];
@@ -123,6 +124,9 @@ const Job = () => {
         {`${projectRate} $`}
       </JobSpecification>
       <JobSpecification title={"deadline"}>{deadline}</JobSpecification>
+      <JobSpecification title={"attachment"}>
+        <iframe src={attachment} className="w-[300px] h-[300px]" title="document preview"></iframe>
+      </JobSpecification>
       </div>
       {
         user?.email === jobPosterMail && (
