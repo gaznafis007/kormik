@@ -7,15 +7,33 @@ import useAxios from "../../hooks/useAxios/useAxios";
 import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
 import useAuth from "../../hooks/useAuth/useAuth";
 import Swal from "sweetalert2";
-import { FileUploader } from "react-drag-drop-files";
 import DragAndDrop from "../../Shared/DragAndDrop/DragAndDrop";
 
 const PostJob = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [fileURL, setFileURL] = useState("");
   const fileTypes = ["PDF", "JPEG", "PNG", "XLSX"];
   const [file, setFile] = useState(null);
-  const handleChange = (file) => {
+  const handleChange = async (file) => {
+    setIsLoading(true);
     setFile(file);
-    console.log(file)
+    console.log(file);
+    try {
+      axiosSecure
+        .post(
+          `https://api.cloudinary.com/v1_1/${
+            import.meta.env.CLOUD_NAME
+          }/raw/upload`,
+          file
+        )
+        .then((res) => {
+          console.log(res.data);
+          setIsLoading(false);
+        });
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
+    }
   };
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
@@ -51,7 +69,7 @@ const PostJob = () => {
       jobType: form.jobType.value,
       attachment: form.attachment,
     };
-    console.log(job)
+    console.log(job);
     // axiosSecure.post("/jobs", job).then((res) => {
     //   if (res.data.acknowledged) {
     //     Swal.fire({
@@ -175,11 +193,16 @@ const PostJob = () => {
             handler={handleChange}
             file={file}
           >
-            {
-              file && (
-                <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500">{file.name}</p>
-              )
-            }
+            {file && (
+              <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500">
+                {file.name}
+              </p>
+            )}
+            {isLoading && (
+              <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500 animate-ping">
+                Loading....
+              </p>
+            )}
           </DragAndDrop>
           <InputSubmitForForm
             type={"submit"}
