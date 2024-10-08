@@ -2,7 +2,7 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
 import JobSpecification from "./JobSpecification/JobSpecification";
 import useAuth from "../../hooks/useAuth/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "../../Shared/InputField/InputField";
 import TextArea from "../../Shared/TextArea/TextArea";
 import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
@@ -101,6 +101,10 @@ const Job = () => {
       }
     })
   }
+  const [bids, setBids] = useState([]);
+  useEffect(() => {
+    axiosSecure.get(`/bids?jobId=${_id}`).then((res) => setBids(res.data));
+  }, []);
   if (loading) {
     return (
       <h2 className="text-rose-500 text-center text-3xl animate-pulse">
@@ -143,19 +147,19 @@ const Job = () => {
       {
         user?.email === jobPosterMail && (
           <Button handler={handleJobDelete} params={_id}>
-            <TrashIcon className="size-7 text-white"></TrashIcon>
+            <TrashIcon className="size-7 text-white"></TrashIcon> Delete this job
           </Button>
         )
       }
       </div>
       {
         user?.email === jobPosterMail && (
-          <Bids jobId={_id}></Bids>
+          <Bids bids={bids} setBids={setBids}></Bids>
         )
         
       }
       {
-       winnerId && (
+       user?.email === jobPosterMail && winnerId && (
         <p className="md:w-1/3 text-4xl text-center text-rose-500">Hello</p>
       ) 
       }

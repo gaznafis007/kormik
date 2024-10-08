@@ -6,12 +6,12 @@ import {getStorage} from "firebase/storage"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBpFDTlM-4PsWJxhERWclozzQsU5cWqtSo",
-  authDomain: "kormik-dfdd3.firebaseapp.com",
-  projectId: "kormik-dfdd3",
-  storageBucket: "kormik-dfdd3.appspot.com",
-  messagingSenderId: "578752175694",
-  appId: "1:578752175694:web:e1f2e9bfefcadbf7c52d1f",
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain: import.meta.env.VITE_authDomain,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId,
 };
 
 // Initialize Firebase

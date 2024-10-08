@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import useAxios from "../../../../hooks/useAxios/useAxios";
 import Heading from "../../../../Shared/Heading/Heading";
 import Card from "../../../../Shared/Card/Card";
@@ -11,9 +11,10 @@ import {
 import Swal from "sweetalert2";
 
 // eslint-disable-next-line react/prop-types
-const Bids = ({ jobId }) => {
+const Bids = ({ bids, setBids }) => {
+  const biddings = [...bids]
   const axiosSecure = useAxios();
-  const [bids, setBids] = useState([]);
+  
   const [seeDetails, setSeeDetails] = useState("");
   const handleSeeDetails = (id) => {
     setSeeDetails(id);
@@ -26,7 +27,7 @@ const Bids = ({ jobId }) => {
           title: "Bid deleted successfully!",
           icon: "error",
         });
-        const newBids = bids.filter((bid) => bid._id !== id);
+        const newBids = biddings.filter((bid) => bid._id !== id);
         setBids(newBids);
       }
     });
@@ -56,15 +57,13 @@ const Bids = ({ jobId }) => {
       }
     });
   };
-  useEffect(() => {
-    axiosSecure.get(`/bids?jobId=${jobId}`).then((res) => setBids(res.data));
-  }, []);
+  
   return (
     <div className="p-6 overflow-y-auto border-2 rounded-md border-slate-900 shadow-md shadow-slate-300">
       <Heading>All the pitches</Heading>
       <div className="flex flex-col gap-4">
-        {bids.length ? (
-          bids.map((bid) => (
+        {biddings.length ? (
+          biddings.map((bid) => (
             <Card key={bid._id} title={bid?.bidTitle}>
               <div className="flex flex-row justify-between items-center">
                 <h1 className="text-md font-sans font-semibold">
