@@ -72,12 +72,12 @@ const Bids = ({ bids, setBids }) => {
                 {seeDetails === bid._id ? (
                   <ChevronUpIcon
                     onClick={() => handleSeeDetails("")}
-                    className="size-6 text-white"
+                    className="size-6 text-white cursor-pointer"
                   ></ChevronUpIcon>
                 ) : (
                   <ChevronDownIcon
                     onClick={() => handleSeeDetails(bid._id)}
-                    className="size-6 text-white"
+                    className="size-6 text-white cursor-pointer"
                   ></ChevronDownIcon>
                 )}
               </div>

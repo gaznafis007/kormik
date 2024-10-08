@@ -12,6 +12,7 @@ import useAxios from "../../hooks/useAxios/useAxios";
 import Bids from "./JobSpecification/Bids/Bids";
 import Button from "../../Shared/Button/Button";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import ProjectTexting from "./ProjectTexting/ProjectTexting";
 const Job = () => {
   const navigate = useNavigate()
   const {
@@ -114,7 +115,7 @@ const Job = () => {
   }
   return (
     <section className="mx-8 my-4 ">
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row gap-6">
       <div className="w-full md:w-1/3">
       <h1 className="text-4xl font-bold text-rose-500 capitalize">{title}</h1>
       <h3 className="text-lg font-semibold font-sans text-white">{`@${jobPoster}`}</h3>
@@ -160,7 +161,7 @@ const Job = () => {
       }
       {
        user?.email === jobPosterMail && winnerId && (
-        <p className="md:w-1/3 text-4xl text-center text-rose-500">Hello</p>
+        <ProjectTexting></ProjectTexting>
       ) 
       }
       </div>
