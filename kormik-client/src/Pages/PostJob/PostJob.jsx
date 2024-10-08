@@ -8,49 +8,35 @@ import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForFo
 import useAuth from "../../hooks/useAuth/useAuth";
 import Swal from "sweetalert2";
 import DragAndDrop from "../../Shared/DragAndDrop/DragAndDrop";
-import { keyValues } from "../../../keys";
-import axios from "axios";
+import { getDownloadURL } from "firebase/storage";
+
 
 const PostJob = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [fileURL, setFileURL] = useState("");
+  const [attachment, setAttachment] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [fileUrl, setFileUrl] = useState('')
+  const { user, uploadFile } = useAuth();
   const fileTypes = ["PDF", "JPEG", "PNG", "XLSX"];
-  const [attachment, setAttachment] = useState(null);
   const handleChange = async (file) => {
     if(!file){
       return
     }
-  const formData = new FormData();
-  setIsLoading(true)
-  setAttachment(file)
-  formData.append('file', file)
-  formData.append('upload_preset', 'quiqhqhf')
-    try {
-      axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${keyValues.cloudName}/upload`,
-          formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-            params: {resource_type: 'raw'}
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-          setFileURL(res.data?.secure_url)
-          setIsLoading(false);
-        });
-            
-    } catch (error) {
-      console.error(error);
-      setIsLoading(false);
-    }
+    setIsLoading(true)
+    setAttachment(file)
+    uploadFile(file)
+    .then(snapshot =>{
+      getDownloadURL(snapshot.ref)
+      .then(url=>{
+        setFileUrl(url)
+        console.log(url)
+        setIsLoading(false)
+      })
+    })
   };
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
   const axiosSecure = useAxios();
-  const { user } = useAuth();
+  
   const handleSubCategories = (event) => {
     event.preventDefault();
     const category = event.target.value;
@@ -79,20 +65,20 @@ const PostJob = () => {
       subCategory: form.subCategory.value,
       deadline: form.deadline.value,
       jobType: form.jobType.value,
-      attachment: fileURL,
+      attachment: fileUrl,
     };
     console.log(job);
-    // axiosSecure.post("/jobs", job).then((res) => {
-    //   if (res.data.acknowledged) {
-    //     Swal.fire({
-    //       title: `Congrats, your job / project for ${form.title.value} is posted`,
-    //       icon: "success",
-    //     });
-    //     form.reset()
-    //   }
-    // });
+    axiosSecure.post("/jobs", job).then((res) => {
+      if (res.data.acknowledged) {
+        Swal.fire({
+          title: `Congrats, your job / project for ${form.title.value} is posted`,
+          icon: "success",
+        });
+        form.reset()
+        console.log(res.data)
+      }
+    });
   };
-
   if (user?.role === "freelancer") {
     return (
       <>

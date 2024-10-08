@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from 'react';
 import {createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile} from 'firebase/auth'
-import { app } from '../Firebase/firebase.config';
+import { app, storage } from '../Firebase/firebase.config';
 import useAxios from '../hooks/useAxios/useAxios';
+import { ref, uploadBytes } from 'firebase/storage';
 
 export const AuthContext = createContext()
 // eslint-disable-next-line react/prop-types
@@ -23,7 +24,10 @@ const AuthProvider = ({children}) => {
     const logOut = () =>{
         return signOut(auth)
     }
-
+    const uploadFile = (file) =>{
+        const storageRef = ref(storage, `files/${file.name}`)
+        return uploadBytes(storageRef, file)
+    }
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
             setUser(currentUser);
@@ -58,6 +62,7 @@ const AuthProvider = ({children}) => {
         logIn,
         getProfile,
         logOut, 
+        uploadFile
     }
     
     
