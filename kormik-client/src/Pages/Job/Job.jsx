@@ -23,7 +23,8 @@ const Job = () => {
     postDate,
     category,
     jobType,
-    attachment
+    attachment,
+    winnerId
   } = useLoaderData();
   const [bidForm, setBidForm] = useState(false);
   const posted = postDate.split("T")[0];
@@ -58,6 +59,7 @@ const Job = () => {
 
     setBidLoading(true);
     // test purpose
+
     // fetch('http://localhost:5000/bids', {
     //     method: 'POST',
     //     headers:{
@@ -98,7 +100,7 @@ const Job = () => {
   return (
     <section className="mx-8 my-4 ">
       <div className="flex flex-col md:flex-row">
-      <div className="md:w-1/2">
+      <div className="w-full md:w-1/3">
       <h1 className="text-4xl font-bold text-rose-500 capitalize">{title}</h1>
       <h3 className="text-lg font-semibold font-sans text-white">{`@${jobPoster}`}</h3>
       <h3 className="text-lg font-semibold font-sans my-6 text-gray-200">
@@ -132,6 +134,12 @@ const Job = () => {
         user?.email === jobPosterMail && (
           <Bids jobId={_id}></Bids>
         )
+        
+      }
+      {
+       winnerId && (
+        <p className="md:w-1/3 text-4xl text-center text-rose-500">Hello</p>
+      ) 
       }
       </div>
       {user.role === "freelancer" &&
@@ -186,6 +194,7 @@ const Job = () => {
           </form>
         </>
       )}
+      
     </section>
   );
 };

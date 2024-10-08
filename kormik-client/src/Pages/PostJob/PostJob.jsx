@@ -9,34 +9,33 @@ import useAuth from "../../hooks/useAuth/useAuth";
 import Swal from "sweetalert2";
 import DragAndDrop from "../../Shared/DragAndDrop/DragAndDrop";
 import { getDownloadURL } from "firebase/storage";
-
+import { useNavigate } from "react-router-dom";
 
 const PostJob = () => {
-  const [attachment, setAttachment] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-  const [fileUrl, setFileUrl] = useState('')
+  const [attachment, setAttachment] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fileUrl, setFileUrl] = useState("");
   const { user, uploadFile } = useAuth();
   const fileTypes = ["PDF", "JPEG", "PNG", "XLSX"];
-  const handleChange = async (file) => {
-    if(!file){
-      return
-    }
-    setIsLoading(true)
-    setAttachment(file)
-    uploadFile(file)
-    .then(snapshot =>{
-      getDownloadURL(snapshot.ref)
-      .then(url=>{
-        setFileUrl(url)
-        console.log(url)
-        setIsLoading(false)
-      })
-    })
-  };
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
   const axiosSecure = useAxios();
-  
+  const navigate = useNavigate();
+
+  const handleChange = async (file) => {
+    if (!file) {
+      return;
+    }
+    setIsLoading(true);
+    setAttachment(file);
+    uploadFile(file).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setFileUrl(url);
+        setIsLoading(false);
+      });
+    });
+  };
+
   const handleSubCategories = (event) => {
     event.preventDefault();
     const category = event.target.value;
@@ -67,15 +66,14 @@ const PostJob = () => {
       jobType: form.jobType.value,
       attachment: fileUrl,
     };
-    console.log(job);
     axiosSecure.post("/jobs", job).then((res) => {
       if (res.data.acknowledged) {
         Swal.fire({
           title: `Congrats, your job / project for ${form.title.value} is posted`,
           icon: "success",
         });
-        form.reset()
-        console.log(res.data)
+        form.reset();
+        navigate(`/jobs/${res.data.insertedId}`)
       }
     });
   };
