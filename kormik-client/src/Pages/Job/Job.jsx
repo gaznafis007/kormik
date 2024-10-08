@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import JobSpecification from "./JobSpecification/JobSpecification";
 import useAuth from "../../hooks/useAuth/useAuth";
 import { useState } from "react";
@@ -10,7 +10,10 @@ import ButtonBlock from "../../Shared/ButtonBlock/ButtonBlock";
 import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios/useAxios";
 import Bids from "./JobSpecification/Bids/Bids";
+import Button from "../../Shared/Button/Button";
+import { TrashIcon } from "@heroicons/react/24/outline";
 const Job = () => {
+  const navigate = useNavigate()
   const {
     _id,
     title,
@@ -90,6 +93,14 @@ const Job = () => {
       }
     });
   };
+  const handleJobDelete = id =>{
+    axiosSecure.delete(`/jobs/${id}`)
+    .then(res =>{
+      if(res.data.deletedCount > 0){
+        navigate("/jobs")
+      }
+    })
+  }
   if (loading) {
     return (
       <h2 className="text-rose-500 text-center text-3xl animate-pulse">
@@ -129,6 +140,13 @@ const Job = () => {
       <JobSpecification title={"attachment"}>
         <iframe src={attachment} className="w-[300px] h-[300px]" title="document preview"></iframe>
       </JobSpecification>
+      {
+        user?.email === jobPosterMail && (
+          <Button handler={handleJobDelete} params={_id}>
+            <TrashIcon className="size-7 text-white"></TrashIcon>
+          </Button>
+        )
+      }
       </div>
       {
         user?.email === jobPosterMail && (
