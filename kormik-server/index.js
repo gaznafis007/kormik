@@ -183,6 +183,12 @@ async function run() {
       const result = await bidCollection.updateOne(query,updatedDoc, options)
       res.send(result)
     })
+    app.get("/bids/:id", async(req,res) =>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await bidCollection.findOne(query);
+      res.send(result)
+    })
     app.delete("/bids/:id", async(req,res) =>{
       const id = req.params.id;
       const query = {_id : new ObjectId(id)};

@@ -31,6 +31,7 @@ const Job = () => {
     winnerId
   } = useLoaderData();
   const [bidForm, setBidForm] = useState(false);
+  const [winner, setWinner] = useState({})
   const posted = postDate.split("T")[0];
   const { user, loading } = useAuth();
   const axiosSecure = useAxios();
@@ -105,6 +106,9 @@ const Job = () => {
   const [bids, setBids] = useState([]);
   useEffect(() => {
     axiosSecure.get(`/bids?jobId=${_id}`).then((res) => setBids(res.data));
+    if(winnerId){
+      axiosSecure.get(`/bids/${winnerId}`).then(res => setWinner(res.data))
+    }
   }, []);
   if (loading) {
     return (
@@ -160,7 +164,7 @@ const Job = () => {
         
       }
       {
-       user?.email === jobPosterMail && winnerId && (
+       user?.email === jobPosterMail || user?.email === winner?.bidderEmail && (
         <ProjectTexting></ProjectTexting>
       ) 
       }
