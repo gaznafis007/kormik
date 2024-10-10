@@ -8,6 +8,9 @@ const ProjectTexting = () => {
     return (
         <div className="p-6 w-full md:w-1/3 overflow-y-auto border-2 rounded-md border-slate-900 shadow-md shadow-slate-300">
             <Heading>project details</Heading>
+            <p className="text-center-text-2xl text-rose-500">This is to maintaining the streak
+
+            </p>
             {
                 user?.email === 'employer' ? 
                 <Button>Accept the project file</Button>
