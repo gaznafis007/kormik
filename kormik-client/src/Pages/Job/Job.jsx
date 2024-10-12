@@ -99,6 +99,10 @@ const Job = () => {
     axiosSecure.delete(`/jobs/${id}`)
     .then(res =>{
       if(res.data.deletedCount > 0){
+        Swal.fire({
+          title: "You have deleted this job post",
+          icon: "warning"
+        })
         navigate("/jobs")
       }
     })
