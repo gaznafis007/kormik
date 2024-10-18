@@ -4,7 +4,18 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 const http = require('http')
 const app = express();
-const data  = require('./data/categories.json')
+const data  = require('./data/categories.json');
+const { Server } = require('socket.io');
+
+
+// socket.io setuo
+const server = http.createServer(app)
+const io = new Server(server,{
+  cors:{
+    credentials: true,
+    origin: ['http://localhost:5173']
+  }
+})
 
 // middleware
 app.use(cors({
