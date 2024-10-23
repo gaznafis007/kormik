@@ -7,7 +7,7 @@ const ProjectTexting = () => {
     const {user} = useAuth()
     return (
         <div className="p-6 w-full md:w-1/3 overflow-y-auto border-2 rounded-md border-slate-900 shadow-md shadow-slate-300">
-            <Heading>project details</Heading>
+            <Heading>project corresponding</Heading>
             <h2 className="text-rose-500 text-center">This is new section to maintaining streak</h2>
             {
                 user?.email === 'employer' ? 
