@@ -34,8 +34,8 @@ const Dashboard = () => {
           <p>Country: {profile?.country}</p>
           <p>
             {profile?.employerCompanyName
-              ? profile?.employerCompanyName
-              : profile?.title}
+              ? `Company Name: ${profile?.employerCompanyName}`
+              : `Title: ${profile?.title}`}
           </p>
         </div>
       </div>
