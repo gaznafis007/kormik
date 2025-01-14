@@ -121,6 +121,7 @@ const Job = () => {
       </h2>
     );
   }
+  
   return (
     <section className="mx-8 my-4 ">
       <div className="flex flex-col md:flex-row gap-6">
@@ -161,16 +162,20 @@ const Job = () => {
         )
       }
       </div>
-      {
+      {!winner?.bidderEmail && (
         user?.email === jobPosterMail && (
           <Bids bids={bids} setBids={setBids}></Bids>
         )
-        
+      )
       }
       {
-       user?.email === jobPosterMail || user?.email === winner?.bidderEmail && (
-        <ProjectTexting></ProjectTexting>
-      ) 
+        winner?.bidderEmail && (
+          
+            (user?.email === jobPosterMail || user?.email === winner?.bidderEmail) && (
+             <ProjectTexting winner={winner}></ProjectTexting>
+           ) 
+           
+        )
       }
       </div>
       {user.role === "freelancer" &&

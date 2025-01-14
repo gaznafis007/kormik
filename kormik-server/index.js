@@ -5,6 +5,7 @@ const port = process.env.PORT || 5000;
 const http = require('http')
 const app = express();
 const { Server } = require('socket.io');
+const { timeStamp } = require('console');
 
 
 // socket.io setuo
@@ -206,7 +207,6 @@ async function run() {
       const result = await bidCollection.deleteOne(query);
       res.send(result)
     })
-
     // winners-api
     app.post("/winners", async(req,res) =>{
       const winner = req.body.winningBid
@@ -220,6 +220,33 @@ async function run() {
       }
       const result = await winningBidCollection.find(query).toArray();
       res.send(result)
+    })
+    // project-submission
+    app.patch("/winners/:id", async(req,res) =>{
+      const id = req.params.id;
+      const conversation = req.body;
+      if(!conversation?.sender){
+        return res.status(400).send({message: "No sender Information, please try again"})
+      }
+      const query = {_id: id};
+      const time = new Date().toISOString();
+      const updatedDoc = {
+        $push:{
+          conversations:{
+            sender: conversation?.sender,
+            description: conversation?.description,
+            fileUrl: conversation?.fileUrl,
+            timestamp: time
+          }
+        }
+      }
+      const options = {upsert:true};
+      try{
+      const result = await winningBidCollection.updateOne(query, updatedDoc, options);
+      res.send(result)
+      }catch(error){
+        res.status(500).send({error: "something went wrong"})
+      }
     })
   } finally {
     // Ensures that the client will close when you finish/error

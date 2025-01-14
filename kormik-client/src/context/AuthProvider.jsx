@@ -25,8 +25,14 @@ const AuthProvider = ({children}) => {
         return signOut(auth)
     }
     const uploadFile = (file) =>{
+        if (!file) {
+            throw new Error("No file provided for upload.");
+          }
         const storageRef = ref(storage, `files/${file.name}`)
-        return uploadBytes(storageRef, file)
+        return uploadBytes(storageRef, file).catch((error) =>{
+            console.error("Error uploading file", error)
+            throw error;
+        })
     }
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth, (currentUser)=>{
