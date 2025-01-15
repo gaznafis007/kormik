@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth/useAuth";
+import Loading from "../../Shared/Loading/Loading";
 
 
 // eslint-disable-next-line react/prop-types
@@ -11,7 +12,7 @@ const PrivateRouter = ({children}) => {
     }
     if(loading){
         return (
-            <h2 className="text-rose-500 text-center text-3xl animate-pulse">Loading..</h2>
+            <Loading type="spinner" size="md" text="Loading..."/>
         )
     }
     return (

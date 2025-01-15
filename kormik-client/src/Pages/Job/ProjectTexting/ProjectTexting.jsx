@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import TextArea from "../../../Shared/TextArea/TextArea";
 import useAxios from "../../../hooks/useAxios/useAxios";
 import Chat from "../Chat/Chat";
+import Loading from "../../../Shared/Loading/Loading";
 
 const ProjectTexting = ({ winner }) => {
   const { _id } = winner;
@@ -131,9 +132,7 @@ const ProjectTexting = ({ winner }) => {
             </p>
           )}
           {loading && (
-            <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500 animate-ping">
-              Loading....
-            </p>
+            <Loading type="spinner" size="md" text="Loading..." />
           )}
         </DragAndDrop>
 

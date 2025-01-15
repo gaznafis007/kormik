@@ -13,6 +13,7 @@ import Bids from "./JobSpecification/Bids/Bids";
 import Button from "../../Shared/Button/Button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import ProjectTexting from "./ProjectTexting/ProjectTexting";
+import Loading from "../../Shared/Loading/Loading";
 const Job = () => {
   const navigate = useNavigate();
   const {
@@ -117,9 +118,7 @@ const Job = () => {
   }, [axiosSecure]);
   if (loading) {
     return (
-      <h2 className="text-rose-500 text-center text-3xl animate-pulse">
-        Loading..
-      </h2>
+      <Loading type="spinner" size="md" text="Loading job..." />
     );
   }
   // console.log(winner, 'winner')

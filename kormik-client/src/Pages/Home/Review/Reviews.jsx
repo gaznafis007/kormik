@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import useAxiosForData from '../../../hooks/useAxiosForData/useAxiosForData';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from '@heroicons/react/24/solid';
+import Loading from '../../../Shared/Loading/Loading';
 
 function Reviews() {
   const [currentReview, setCurrentReview] = useState(0);
@@ -20,7 +21,7 @@ function Reviews() {
   }, [reviews]);
 
   if (loading) {
-    return <div className="text-center py-16 text-gray-600">Loading reviews...</div>;
+    return <Loading type="spinner" size="md" text="Loading reviews..." />;
   }
 
   if (reviews.length === 0) {
