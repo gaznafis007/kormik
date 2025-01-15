@@ -248,6 +248,59 @@ async function run() {
         res.status(500).send({error: "something went wrong"})
       }
     })
+    // project complete
+    app.patch("/winners/complete/:id", async (req, res) => {
+      try {
+        const winningBidId = req.params.id;
+    
+        if (!winningBidId) {
+          return res.status(400).send({ error: "Provide a winning bid ID" });
+        }
+    
+        // Find the winning bid to get the jobId
+        const winningBid = await winningBidCollection.findOne({
+          _id:winningBidId,
+        });
+    
+        if (!winningBid) {
+          return res.status(404).send({ error: "Winning bid not found" });
+        }
+    
+        const jobId = winningBid.jobId;
+    
+        // Update the winning bid's status to "complete"
+        const winningBidQuery = { _id: winningBidId };
+        const updatedDoc = {
+          $set: {
+            status: "complete",
+          },
+        };
+        const winningBidResult = await winningBidCollection.updateOne(
+          winningBidQuery,
+          updatedDoc
+        );
+    
+        // Update the job's status to "complete"
+        const jobIdQuery = { _id: new ObjectId(jobId) };
+        const jobsResult = await jobCollection.updateOne(jobIdQuery, updatedDoc);
+    
+        // Delete all bids related to the same jobId
+        const bidQuery = { jobId: jobId };
+        const bidsResult = await bidCollection.deleteMany(bidQuery);
+    
+        // Send the combined response
+        res.send({
+          message: "Successfully updated the winning bid, job, and deleted related bids",
+          winningBidResult,
+          jobsResult,
+          bidsResult,
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "An error occurred while processing the request" });
+      }
+    });
+    
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
