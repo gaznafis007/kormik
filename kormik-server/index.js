@@ -55,6 +55,7 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     // MongoDB collections
+    const reviewCollection = client.db("kormikDB").collection('reviews');
     const categoriesCollection = client.db('kormikDB').collection('categories');
     const userCollection = client.db('kormikDB').collection('users');
     const jobCollection = client.db('kormikDB').collection('jobs')
@@ -62,6 +63,12 @@ async function run() {
     const winningBidCollection = client.db('kormikDB').collection('winningBid')
 
     // api-s
+
+    // review api
+    app.get("/reviews", async(req,res) =>{
+      const result = await reviewCollection.find({}).limit(5).toArray();
+      res.send(result)
+    })
 
     // category api
     app.get("/categories", async(req,res) =>{
