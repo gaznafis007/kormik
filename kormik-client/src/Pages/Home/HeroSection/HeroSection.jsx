@@ -8,6 +8,12 @@ const HeroSection = () => {
   return (
     <section className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
+      <motion.div
+            className="absolute inset-0 bg-rose-500 rounded-full blur-3xl opacity-20"
+            initial={{ scale: 0 }}
+            animate={{ scale: 0.5 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          />
         <div className="relative z-10 flex flex-col md:flex-row items-center">
           <motion.div 
             initial={{ opacity: 0, x: -50 }}

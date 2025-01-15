@@ -86,7 +86,13 @@ const Gallery = () => {
   };
 
   return (
-    <section className="py-20">
+    <section className="py-20 relative">
+        <motion.div
+            className="absolute inset-0 bg-rose-500 rounded-full blur-3xl opacity-20"
+            initial={{ scale: 0 }}
+            animate={{ scale: 0.5 }}
+            transition={{ duration: 1, delay: 0.5 }}
+          />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
