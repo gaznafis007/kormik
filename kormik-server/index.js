@@ -218,6 +218,9 @@ async function run() {
       if(req.query.bidderEmail){
         query = {bidderEmail: req.query.bidderEmail}
       }
+      if(req.query.id){
+        query = {_id: req.query.id}
+      }
       const result = await winningBidCollection.find(query).toArray();
       res.send(result)
     })

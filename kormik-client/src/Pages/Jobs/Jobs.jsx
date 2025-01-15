@@ -50,7 +50,10 @@ const Jobs = () => {
     })
   }
   useEffect(() => {
-    axiosSecure.get('/jobs').then(res => setJobs(res.data))
+    axiosSecure.get('/jobs').then(res => {
+      const newJobs = res.data.filter(job => job?.status !== 'complete');
+      setJobs(newJobs)
+    })
     if(jobs && categories){
       setIsLoading(false)
     }

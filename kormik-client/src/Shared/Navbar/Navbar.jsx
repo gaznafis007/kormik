@@ -69,7 +69,7 @@ const Navbar = () => {
   );
   return (
     <nav className="md:mx-4 p-4 flex flex-row items-center justify-between text-lg">
-      <h2 className="text-6xl text-white font-semibold font-sans">Kormik</h2>
+      <Link to='/' className="text-6xl text-white font-semibold font-sans">Kormik</Link>
       {/* for medium to large device nav */}
       <ul className="hidden md:flex md:flex-row gap-7 text-rose-600 items-center font-sans font-thin">
         {navItems}

@@ -88,12 +88,13 @@ const ProjectTexting = ({ winner }) => {
     .then(res =>{
       console.log(res.data)
       setProjectLoading(false)
+      toast?.success('congratulation your project is completed');
     })
   }
   // for refactoring test
   // console.log(user, 'project texting user info')
   useEffect(() =>{
-    axiosSecure.get(`/winners?bidderEmail${winner?.bidderEmail}`)
+    axiosSecure.get(`/winners?id=${winner?._id}`)
     .then(res =>{
       // console.log(res.data);
       setWinningBid(res.data[0])
@@ -182,9 +183,15 @@ const ProjectTexting = ({ winner }) => {
         <Button handler={attachment ? handleProjectFileUpload : handleWithoutFile}>
           {loading ? "sending..." : "Send Instructions"}
         </Button>
-        <Button handler={handleAcceptProject}>
+        {
+          winningBid?.status === 'complete' ? 
+          'your project is completed'
+          :(
+            <Button handler={handleAcceptProject}>
           {projectLoading ? 'loading...........':'Accept the project and pay'}
         </Button>
+          )
+        }
         </div>
       </>
       ) : (

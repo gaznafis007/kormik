@@ -14,7 +14,7 @@ import Button from "../../Shared/Button/Button";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import ProjectTexting from "./ProjectTexting/ProjectTexting";
 const Job = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     _id,
     title,
@@ -28,10 +28,11 @@ const Job = () => {
     category,
     jobType,
     attachment,
-    winnerId
+    winnerId,
+    status
   } = useLoaderData();
   const [bidForm, setBidForm] = useState(false);
-  const [winner, setWinner] = useState({})
+  const [winner, setWinner] = useState({});
   const posted = postDate.split("T")[0];
   const { user, loading } = useAuth();
   const axiosSecure = useAxios();
@@ -95,25 +96,25 @@ const Job = () => {
       }
     });
   };
-  const handleJobDelete = id =>{
-    axiosSecure.delete(`/jobs/${id}`)
-    .then(res =>{
-      if(res.data.deletedCount > 0){
+  const handleJobDelete = (id) => {
+    axiosSecure.delete(`/jobs/${id}`).then((res) => {
+      if (res.data.deletedCount > 0) {
         Swal.fire({
           title: "You have deleted this job post",
-          icon: "warning"
-        })
-        navigate("/jobs")
+          icon: "warning",
+        });
+        navigate("/jobs");
       }
-    })
-  }
+    });
+  };
   const [bids, setBids] = useState([]);
   useEffect(() => {
     axiosSecure.get(`/bids?jobId=${_id}`).then((res) => setBids(res.data));
-    if(winnerId){
-      axiosSecure.get(`/bids/${winnerId}`).then(res => setWinner(res.data))
+    // axiosSecure.get(`/winners?id=${_id}`).then((res) =>setWinner(res.data[0]));
+    if (winnerId) {
+      axiosSecure.get(`/bids/${winnerId}`).then((res) => setWinner(res.data));
     }
-  }, []);
+  }, [axiosSecure]);
   if (loading) {
     return (
       <h2 className="text-rose-500 text-center text-3xl animate-pulse">
@@ -121,62 +122,73 @@ const Job = () => {
       </h2>
     );
   }
-  
+  // console.log(winner, 'winner')
   return (
     <section className="mx-8 my-4 ">
       <div className="flex flex-col md:flex-row gap-6">
-      <div className="w-full md:w-1/3">
-      <h1 className="text-4xl font-bold text-rose-500 capitalize">{title}</h1>
-      <h3 className="text-lg font-semibold font-sans text-white">{`@${jobPoster}`}</h3>
-      <h3 className="text-lg font-semibold font-sans my-6 text-gray-200">
-        Job posted on: {posted}
-      </h3>
-      <h3 className="text-lg font-semibold font-sans my-6 text-gray-200 capitalize">
-        Category: {category}
-      </h3>
-      <h3 className="text-lg font-semibold font-sans my-6 text-gray-200 capitalize">
-        job type: {jobType}
-      </h3>
-      <JobSpecification title={"description"}>
-        {jobDescription}
-      </JobSpecification>
-      <JobSpecification title={"required skills"}>
-        <ul className="text-white capitalize list-disc mx-4">
-          {skill.map((oneSkill, idx) => (
-            <li key={idx}>{oneSkill}</li>
-          ))}
-        </ul>
-      </JobSpecification>
-      <JobSpecification title={"Salary / Compensation / Rate"}>
-        {`${projectRate} $`}
-      </JobSpecification>
-      <JobSpecification title={"deadline"}>{deadline}</JobSpecification>
-      <JobSpecification title={"attachment"}>
-        <iframe src={attachment} className="w-[300px] h-[300px]" title="document preview"></iframe>
-      </JobSpecification>
-      {
-        user?.email === jobPosterMail && (
-          <Button handler={handleJobDelete} params={_id}>
-            <TrashIcon className="size-7 text-white"></TrashIcon> Delete this job
-          </Button>
-        )
-      }
-      </div>
-      {!winner?.bidderEmail && (
-        user?.email === jobPosterMail && (
-          <Bids bids={bids} setBids={setBids}></Bids>
-        )
-      )
-      }
-      {
-        winner?.bidderEmail && (
-          
-            (user?.email === jobPosterMail || user?.email === winner?.bidderEmail) && (
-             <ProjectTexting winner={winner}></ProjectTexting>
-           ) 
-           
-        )
-      }
+        <div className="w-full md:w-1/3">
+          <h1 className="text-4xl font-bold text-rose-500 capitalize">
+            {title}
+          </h1>
+          <h3 className="text-lg font-semibold font-sans text-white">{`@${jobPoster}`}</h3>
+          <h3 className="text-lg font-semibold font-sans my-6 text-gray-200">
+            Job posted on: {posted}
+          </h3>
+          <h3 className="text-lg font-semibold font-sans my-6 text-gray-200 capitalize">
+            Category: {category}
+          </h3>
+          <h3 className="text-lg font-semibold font-sans my-6 text-gray-200 capitalize">
+            job type: {jobType}
+          </h3>
+          {
+            status && (
+              <h3 className="text-lg font-semibold font-sans my-6 text-gray-200 capitalize">
+            status: {status}
+          </h3>
+            )
+          }
+          <JobSpecification title={"description"}>
+            {jobDescription}
+          </JobSpecification>
+          <JobSpecification title={"required skills"}>
+            <ul className="text-white capitalize list-disc mx-4">
+              {skill.map((oneSkill, idx) => (
+                <li key={idx}>{oneSkill}</li>
+              ))}
+            </ul>
+          </JobSpecification>
+          <JobSpecification title={"Salary / Compensation / Rate"}>
+            {`${projectRate} $`}
+          </JobSpecification>
+          <JobSpecification title={"deadline"}>{deadline}</JobSpecification>
+          <JobSpecification title={"attachment"}>
+            <iframe
+              src={attachment}
+              className="w-[300px] h-[300px]"
+              title="document preview"
+            ></iframe>
+          </JobSpecification>
+          {user?.email === jobPosterMail && (
+            <Button handler={handleJobDelete} params={_id}>
+              <TrashIcon className="size-7 text-white"></TrashIcon> Delete this
+              job
+            </Button>
+          )}
+        </div>
+        {
+          !status && (
+            !winner?.bidderEmail && (
+              user?.email === jobPosterMail) && (
+              <Bids bids={bids} setBids={setBids}></Bids>
+            )
+          )
+        }
+        {!status &&
+          winner?.bidderEmail &&
+          (user?.email === jobPosterMail ||
+            user?.email === winner?.bidderEmail) && (
+            <ProjectTexting winner={winner}></ProjectTexting>
+          )}
       </div>
       {user.role === "freelancer" &&
         !isBidSubmitted &&
@@ -230,7 +242,6 @@ const Job = () => {
           </form>
         </>
       )}
-      
     </section>
   );
 };
