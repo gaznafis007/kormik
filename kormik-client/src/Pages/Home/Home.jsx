@@ -1,6 +1,7 @@
 import Banner from "./Banner/Banner";
 import Brands from "./Brands/Brands";
 import Gallery from "./Gallery/Gallery";
+import HeroSection from "./HeroSection/HeroSection";
 import PopularStats from "./PopuplarStats/PopularStats";
 import Reviews from "./Review/Reviews";
 
@@ -12,6 +13,7 @@ const Home = () => {
      <Brands/>
      <PopularStats/>
      <Gallery/>
+     <HeroSection/>
      <Reviews/>
     </section>
   );
