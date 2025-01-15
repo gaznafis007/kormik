@@ -17,7 +17,7 @@ const Navbar = () => {
     { label: "Home", href: "/" },
     { label: "Find Job", href: "/jobs" },
     { label: "Find Talents", href: "/postJob" },
-    { label: "About Us", href: "/" },
+    { label: "About Us", href: "/about" },
   ];
 
   return (

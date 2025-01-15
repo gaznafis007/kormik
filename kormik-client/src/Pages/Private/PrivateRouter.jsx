@@ -5,18 +5,18 @@ import Loading from "../../Shared/Loading/Loading";
 
 // eslint-disable-next-line react/prop-types
 const PrivateRouter = ({children}) => {
-    const location = useLocation()
-    const {user, loading} = useAuth()
-    if(user?.uid){
-        return children
-    }
+    const location = useLocation();
+    const {user, loading} = useAuth();
     if(loading){
         return (
-            <Loading type="spinner" size="md" text="Loading..."/>
+            <Loading type="pulse" size="md" text="Loading..."/>
         )
     }
+    if(!user?.uid){
+        return <Navigate to={'/signin'} state={{from: location}} replace></Navigate>
+    }
     return (
-        <Navigate to={'/signin'} state={{from: location}} replace></Navigate>
+        children
     )
 }
 export default PrivateRouter;

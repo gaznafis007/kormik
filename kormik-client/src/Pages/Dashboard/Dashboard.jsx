@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [projects] = useAxiosForData(`/jobs?jobPosterMail=${user?.email}`);
   const [bids] = useAxiosForData(`/winners?bidderEmail=${user?.email}`);
 
+  // console.log(profile)
   useEffect(() => {
     axiosSecure.get(`/users?email=${user?.email}`).then((res) => {
       setProfile(res.data);
@@ -58,9 +59,11 @@ const Dashboard = () => {
           <motion.div variants={itemVariants} className="md:col-span-1">
             <div className="bg-slate-800 rounded-lg shadow-lg p-6 border border-slate-700">
               <div className="flex flex-col items-center space-y-4">
-                {user?.photoURL ? (
-                  <img src={user.photoURL || "/placeholder.svg"} alt={profile?.name} className="w-32 h-32 rounded-full border-4 border-rose-500" />
-                ) : (
+                {profile?.userProfileImage &&(
+                  <img src={user?.userProfileImage} alt={profile?.name} className="w-32 h-32 rounded-full border-4 border-rose-500" />
+                ) 
+               }
+               {!profile?.userProfileImage && (
                   <UserCircleIcon className="w-32 h-32 text-rose-500" />
                 )}
                 <h2 className="text-2xl font-bold text-white">{profile?.name}</h2>

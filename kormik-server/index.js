@@ -4,11 +4,10 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 const http = require('http')
 const app = express();
-const { Server } = require('socket.io');
-const { timeStamp } = require('console');
 
 
-// socket.io setuo
+
+// socket.io setup
 // const server = http.createServer(app)
 // const io = new Server(server,{
 //   cors:{
@@ -25,13 +24,15 @@ app.use(cors({
 app.use(express.json());
 
 require('dotenv').config();
+    app.get("/", (req,res) =>{
+      res.send('Kormik server is initiated')
+  })
 
 
 
-app.get("/", (req,res) =>{
+  app.get("/", (req,res) =>{
     res.send('Kormik server is initiated')
 })
-
 // test-api-for-axios
 
 

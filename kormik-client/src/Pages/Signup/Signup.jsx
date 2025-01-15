@@ -1,46 +1,83 @@
 import { useState } from "react";
-import {useLocation, useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate } from "react-router-dom";
 import Heading from "../../Shared/Heading/Heading";
 import InputField from "../../Shared/InputField/InputField";
 import useAxiosForData from "../../hooks/useAxiosForData/useAxiosForData";
-import useAuth from "../../hooks/useAuth/useAuth"
-import Swal from 'sweetalert2'
+import useAuth from "../../hooks/useAuth/useAuth";
+import Swal from "sweetalert2";
 import useAxios from "../../hooks/useAxios/useAxios";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 import InputSubmitForForm from "../../Shared/InputSubmitForForm/InputSubmitForForm";
+import { getDownloadURL } from "firebase/storage";
+import DragAndDrop from "../../Shared/DragAndDrop/DragAndDrop";
+import Loading from "../../Shared/Loading/Loading";
+import Button from "../../Shared/Button/Button";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 const Signup = () => {
   const [role, setRole] = useState("");
   const [categories] = useAxiosForData("/categories");
-  const {register, getProfile} = useAuth()
+  const { register, getProfile, uploadFile } = useAuth();
   const axiosSecure = useAxios();
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
+  const [fileUrl, setFileUrl] = useState(null);
+  const [previewURL, setPreviewURL] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [attachment, setAttachment] = useState(null);
+  const fileTypes = ["JPEG", "PNG", "JPG"];
+  const handleChange = (file) => {
+    if (!file) {
+      return;
+    }
+    setAttachment(file);
+    setPreviewURL(URL.createObjectURL(file));
+  };
+  const handleProjectFileUpload = async () => {
+    if (!attachment) {
+      toast.error("Attachment is not available");
+      return;
+    }
+    setLoading(true);
+    uploadFile(attachment).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setFileUrl(url);
+        setLoading(false);
+        toast.success('image uploaded!')
+        // console.log(url);
+      });
+    });
+    // console.log(submissionLetter)
+  };
+  const removeFile = () => {
+    setAttachment(null);
+    setPreviewURL("");
+    setFileUrl("");
+  };
   const handleRole = (event) => {
     event.preventDefault();
     console.log(event.target.value);
     setRole(event.target.value);
   };
-  const storeUser = (user) =>{
-    try{
-      axiosSecure.post("/users", user)
-      .then(res=>{
-        console.log(res.data)
-        if(res.data.acknowledged){
+  const storeUser = (user) => {
+    try {
+      axiosSecure.post("/users", user).then((res) => {
+        console.log(res.data);
+        if (res.data.acknowledged) {
           Swal.fire({
             title: `Congrats you ar registered as a ${user?.role}`,
-            icon: 'success'
-          })
-          navigate(from)
+            icon: "success",
+          });
+          navigate(from);
         }
-      })
-    }catch{
-      (err)=>{
-        toast.error(err.message)
-      }
+      });
+    } catch {
+      (err) => {
+        toast.error(err.message);
+      };
     }
-  }
+  };
   const handleEmployerRegister = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -61,26 +98,28 @@ const Signup = () => {
       companyBio: form.companyBio.value,
       bio: form.employerBio.value,
       paymentMethod: form.paymentMethod.value,
-      userProfileImage: formData,
+      userProfileImage: fileUrl,
     };
     register(employer.email, employer.password)
-    .then(res=>{
-      const user = res.user
-      console.log(user)
-      getProfile(employer.name)
-      storeUser(employer)
-    })
-    .catch(err=>{
-      const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]
-      toast.error(errorMessage)
-    })
+      .then((res) => {
+        const user = res.user;
+        console.log(user);
+        getProfile(employer.name);
+        storeUser(employer);
+      })
+      .catch((err) => {
+        const errorMessage = err.message
+          .split(" ")[2]
+          .split("/")[1]
+          .split(")")[0];
+        toast.error(errorMessage);
+      });
     console.log(employer);
   };
   const handleFreelancerRegister = (event) => {
     event.preventDefault();
     const form = event.target;
-    const formData = new FormData();
-    formData.append("profileImage", form.profileImage.files[0]);
+
     const freelancer = {
       name: form.name.value,
       email: form.email.value,
@@ -95,23 +134,26 @@ const Signup = () => {
       country: form.country.value,
       rate: form.rate.value,
       availability: form.availability.value,
-      userProfileImage: formData,
+      userProfileImage: fileUrl,
     };
     // console.log("freelancer", freelancer);
     register(freelancer?.email, freelancer?.password)
-    .then(res=>{
-      const user = res.user;
-      console.log(user)
-      getProfile(freelancer?.name)
-      storeUser(freelancer)
-    })
-    .catch(err=>{
-      const errorMessage = err.message.split(' ')[2].split('/')[1].split(')')[0]
-      toast.error(errorMessage)
-    })
+      .then((res) => {
+        const user = res.user;
+        console.log(user);
+        getProfile(freelancer?.name);
+        storeUser(freelancer);
+      })
+      .catch((err) => {
+        const errorMessage = err.message
+          .split(" ")[2]
+          .split("/")[1]
+          .split(")")[0];
+        toast.error(errorMessage);
+      });
   };
   return (
-    <section>
+    <section className="my-4">
       <Heading>welcome! land your first project with us</Heading>
       <form
         onSubmit={
@@ -228,12 +270,46 @@ const Signup = () => {
               <label className="capitalize text-rose-500">
                 profile picture
               </label>
-              <input
-                type="file"
-                name="profileImage"
-                className="w-full p-2 rounded-md bg-white border border-rose-500"
-              />
+              <DragAndDrop
+                name={"attachment"}
+                fileTypes={fileTypes}
+                label={"upload your file here"}
+                placeholder={"Drag or drop your file here"}
+                handler={handleChange}
+                file={attachment}
+              >
+                {attachment && !loading && (
+                  <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500">
+                    {attachment.name}
+                  </p>
+                )}
+                {loading && (
+                  <Loading type="spinner" size="md" text="Loading..." />
+                )}
+              </DragAndDrop>
+              {
+                previewURL && (
+                  <div className="mt-4">
+                    <h3 className="text-center text-rose-500">File Preview:</h3>
+              <Button handler={removeFile}>
+                <TrashIcon className="size-7 text-white"></TrashIcon> Remove
+                File
+              </Button>
+              {/* Preview for Images */}
+              {attachment?.type.startsWith("image/") && (
+                <img
+                  src={previewURL}
+                  alt="Preview"
+                  className="w-full h-auto rounded-md border border-rose-500 mt-2"
+                />
+              )}
+                  </div>
+                )
+              }
             </div>
+            <Button handler={handleProjectFileUpload}>
+            {loading ? "uploading..." : "upload image"}
+          </Button>
           </>
         )}
         {role === "freelancer" && (
@@ -320,16 +396,53 @@ const Signup = () => {
               <label className="capitalize text-rose-500">
                 profile picture
               </label>
-              <input
-                type="file"
-                name="profileImage"
-                className="w-full p-2 rounded-md bg-white border border-rose-500"
-              />
+              <DragAndDrop
+                name={"attachment"}
+                fileTypes={fileTypes}
+                label={"upload your file here"}
+                placeholder={"Drag or drop your file here"}
+                handler={handleChange}
+                file={attachment}
+              >
+                {attachment && !loading && (
+                  <p className="text-rose-500 text-center w-full cursor-pointer p-4 bg-transparent rounded-md border border-dashed border-rose-500">
+                    {attachment.name}
+                  </p>
+                )}
+                {loading && (
+                  <Loading type="spinner" size="md" text="Loading..." />
+                )}
+              </DragAndDrop>
+              {
+                previewURL && (
+                  <div className="mt-4">
+                    <h3 className="text-center text-rose-500">File Preview:</h3>
+              <Button handler={removeFile}>
+                <TrashIcon className="size-7 text-white"></TrashIcon> Remove
+                File
+              </Button>
+              {/* Preview for Images */}
+              {attachment?.type.startsWith("image/") && (
+                <img
+                  src={previewURL}
+                  alt="Preview"
+                  className="w-full h-auto rounded-md border border-rose-500 mt-2"
+                />
+              )}
+                  </div>
+                )
+              }
+              <Button handler={handleProjectFileUpload}>
+            {loading ? "uploading..." : "upload image"}
+          </Button>
             </div>
           </>
         )}
         {role && (
-          <InputSubmitForForm type={"submit"} value={"Register"}></InputSubmitForForm>
+          <InputSubmitForForm
+            type={"submit"}
+            value={"Register"}
+          ></InputSubmitForForm>
         )}
       </form>
     </section>

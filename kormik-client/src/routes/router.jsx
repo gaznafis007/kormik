@@ -8,6 +8,7 @@ import PrivateRouter from "../Pages/Private/PrivateRouter"
 import Jobs from "../Pages/Jobs/Jobs"
 import Job from "../Pages/Job/Job"
 import Dashboard from "../Pages/Dashboard/Dashboard"
+import About from "../Pages/About/About"
 
 
 
@@ -44,6 +45,9 @@ export const router = createBrowserRouter([
             {
                 path:"/dashboard",
                 element: <PrivateRouter><Dashboard/></PrivateRouter>
+            },{
+                path: '/about',
+                element: <About/>
             }
         ]
     }
