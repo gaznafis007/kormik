@@ -18,7 +18,7 @@ const PostJob = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const { user, uploadFile } = useAuth();
-  const fileTypes = ["PDF", "JPEG", "PNG", "XLSX"];
+  const fileTypes = ["PDF", "JPEG", "PNG", "XLSX", "JPG"];
   const [categories] = useAxiosForData("/categories");
   const [subCategories, setSubCategories] = useState("");
   const axiosSecure = useAxios();

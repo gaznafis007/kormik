@@ -8,7 +8,7 @@ const Signin = () => {
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname || "/";
-  const { logIn } = useAuth();
+  const { logIn, loading } = useAuth();
 
   const handleSignIn = (event) => {
     event.preventDefault();
@@ -24,7 +24,7 @@ const Signin = () => {
           title: `Welcome Back! ${res.user.displayName}`,
           icon: "success",
         });
-        navigate(from);
+        navigate(from, {replace: true});
       })
       .catch((err) => {
         const errorMessage = err.message
@@ -100,7 +100,7 @@ const Signin = () => {
           <div>
             <input
               type="submit"
-              value="Log In"
+              value={loading ? 'login...' : 'Login'}
               className="w-full bg-rose-500 text-white py-3 px-6 rounded-md font-semibold hover:bg-rose-600 cursor-pointer transition duration-300"
             />
           </div>

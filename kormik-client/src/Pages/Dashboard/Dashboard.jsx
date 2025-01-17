@@ -15,7 +15,7 @@ const Dashboard = () => {
   const [projects] = useAxiosForData(`/jobs?jobPosterMail=${user?.email}`);
   const [bids] = useAxiosForData(`/winners?bidderEmail=${user?.email}`);
 
-  // console.log(profile)
+  // console.log(profile?.userProfileImage)
   useEffect(() => {
     axiosSecure.get(`/users?email=${user?.email}`).then((res) => {
       setProfile(res.data);
@@ -109,7 +109,7 @@ const EmployerProjects = ({ projects }) => (
   <div>
     <div className="flex items-center justify-between mb-4">
       <h3 className="text-xl font-semibold text-white">Total Projects: {projects.length}</h3>
-      <Link to="/post-job" className="text-rose-400 hover:text-rose-300 transition-colors duration-200">
+      <Link to="/postJob" className="text-rose-400 hover:text-rose-300 transition-colors duration-200">
         Post New Project
       </Link>
     </div>

@@ -5,6 +5,7 @@ import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { Link } from "react-router-dom";
 import freelanceOne from "../../../assets/freelance-lottie-1.json";
 import freelanceTwo from "../../../assets/freelance-lottie-2.json";
+import freelancerThree from '../../../assets/audio.json';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -147,6 +148,11 @@ const Banner = () => {
               <SwiperSlide>
                 <div className="bg-slate-800 rounded-2xl p-4">
                   <Lottie className="h-full" animationData={freelanceTwo} />
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className="bg-slate-800 rounded-2xl p-4">
+                  <Lottie className="h-full" animationData={freelancerThree} />
                 </div>
               </SwiperSlide>
             </Swiper>

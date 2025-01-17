@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth/useAuth";
 import toast from "react-hot-toast";
+import Logo from "../Logo/Logo";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
@@ -16,7 +17,6 @@ const Navbar = () => {
   const navItems = [
     { label: "Home", href: "/" },
     { label: "Find Job", href: "/jobs" },
-    { label: "Find Talents", href: "/postJob" },
     { label: "About Us", href: "/about" },
   ];
 
@@ -29,7 +29,8 @@ const Navbar = () => {
             to="/" 
             className="flex items-center space-x-2"
           >
-            <span className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent">
+            <Logo/>
+            <span className="text-3xl font-bold bg-gradient-to-r from-rose-500 to-rose-400 bg-clip-text text-transparent hidden md:inline">
               Kormik
             </span>
           </Link>
@@ -57,6 +58,12 @@ const Navbar = () => {
                   className="text-gray-200 hover:text-rose-500 transition-colors duration-300"
                 >
                   Dashboard
+                </Link>
+                <Link
+                  to="/postJob"
+                  className="text-gray-200 hover:text-rose-500 transition-colors duration-300"
+                >
+                  Find Talents
                 </Link>
                 <button
                   onClick={handleLogOut}
@@ -124,6 +131,12 @@ const Navbar = () => {
                 className="block px-3 py-2 rounded-md text-gray-200 hover:text-rose-500 hover:bg-slate-600 transition-colors duration-300"
               >
                 Dashboard
+              </Link>
+              <Link
+                to="/postJob"
+                className="block px-3 py-2 rounded-md text-gray-200 hover:text-rose-500 hover:bg-slate-600 transition-colors duration-300"
+              >
+                Find Talent
               </Link>
               <button
                 onClick={handleLogOut}

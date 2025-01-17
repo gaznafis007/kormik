@@ -40,7 +40,7 @@ export const router = createBrowserRouter([
             {
                 path:"/jobs/:id",
                 element: <PrivateRouter><Job/></PrivateRouter>,
-                loader: ({params})=> fetch(`http://localhost:5000/jobs/${params.id}`)
+                loader: ({params})=> fetch(`https://kormik-server.vercel.app/jobs/${params.id}`)
             },
             {
                 path:"/dashboard",
